@@ -1,0 +1,295 @@
+Mixed logit with 100 MLHS draws: 9 fixed
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          90.1091                      1.54e+03
+     1           5          79.6942    1.43486e-05            596  
+     2           6          78.7912              1            503  
+     3           7          76.5919              1            250  
+     4           8          74.2486              1            281  
+     5           9          69.5792              1            488  
+     6          10          65.1461              1            319  
+     7          11          63.1022              1            114  
+     8          12          62.4913              1           56.7  
+     9          13          62.2576              1           49.8  
+    10          14          62.1084              1           45.3  
+    11          15          61.8701              1           39.5  
+    12          16          61.3839              1             57  
+    13          17          60.4377              1           85.5  
+    14          18          59.0231              1            116  
+    15          19           57.623              1            138  
+    16          20          56.6868              1            174  
+    17          21          56.0329              1            193  
+    18          22          55.4318              1            174  
+    19          23          55.0827              1            107  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          24          54.7949              1             34  
+    21          25          54.6218              1           36.9  
+    22          26          54.5296              1           45.1  
+    23          27          54.4716              1           45.4  
+    24          28          54.3468              1             43  
+    25          29          54.1012              1             38  
+    26          30          53.6685              1           32.3  
+    27          31          53.1979              1           47.5  
+    28          32          52.9036              1           62.3  
+    29          33          52.7277              1           65.6  
+    30          34          52.5761              1             56  
+    31          35          52.4008              1           38.2  
+    32          36          52.2127              1           7.89  
+    33          37          52.1328              1           6.75  
+    34          38          52.1176              1           6.61  
+    35          39          52.1164              1           6.56  
+    36          40          52.1149              1           6.54  
+    37          41          52.1108              1           6.49  
+    38          42          52.1015              1           10.2  
+    39          43          52.0774              1           18.8  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    40          44          52.0175              1           31.6  
+    41          45          51.8734              1           49.6  
+    42          46          51.5565              1           69.7  
+    43          47          50.9726              1           86.7  
+    44          48          50.2862              1           87.1  
+    45          49          50.0519              1           36.2  
+    46          50          49.9894              1           19.5  
+    47          51          49.9644              1             18  
+    48          52          49.9333              1           18.7  
+    49          53          49.8417              1           29.7  
+    50          54          49.6391              1           47.6  
+    51          55          49.1543              1             78  
+    52          56          48.1231              1           94.7  
+    53          57          46.7303              1           35.4  
+    54          58          46.2282              1           27.8  
+    55          59          45.9035              1           7.38  
+    56          60          45.8162              1           3.49  
+    57          61          45.8092              1           3.78  
+    58          62          45.8082              1           3.45  
+    59          63          45.8079              1           3.45  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    60          64          45.8075              1           3.45  
+    61          65          45.8062              1           4.39  
+    62          66          45.8033              1           8.56  
+    63          67          45.7954              1           15.8  
+    64          68          45.7748              1           27.9  
+    65          69          45.7196              1           48.3  
+    66          70          45.5718              1           80.6  
+    67          71          45.1903              1            117  
+    68          72          44.4655              1            113  
+    69          73          43.9157              1           75.7  
+    70          74          43.6887              1           42.1  
+    71          75          43.5783              1           13.1  
+    72          76          43.5621              1           1.02  
+    73          77          43.5613              1          0.946  
+    74          78          43.5612              1          0.939  
+    75          79          43.5612              1          0.938  
+    76          80          43.5612              1          0.938  
+    77          81          43.5611              1          0.938  
+    78          82          43.5609              1           1.27  
+    79          83          43.5605              1           2.37  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    80          84          43.5594              1           4.19  
+    81          85          43.5566              1           7.15  
+    82          86          43.5493              1             12  
+    83          87          43.5304              1           19.7  
+    84          88           43.481              1           31.8  
+    85          89          43.3566              1           47.4  
+    86          90          43.0863              1             56  
+    87          91          42.7134              1           44.1  
+    88          92          42.4913              1           27.2  
+    89          93          42.4247              1             14  
+    90          94          42.4077              1           4.48  
+    91          95          42.4056              1          0.535  
+    92          96          42.4054              1          0.204  
+    93          97          42.4054              1          0.101  
+    94          98          42.4054              1         0.0274  
+    95          99          42.4054              1        0.00663  
+    96         100          42.4054              1        0.00149  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','9.656167e-07','1.000000e-06'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 0.0069559 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -42.4054
+ 
+Taking inverse of hessian for standard errors.
+ 
+The value of grad*inv(hessian)*grad is: 4.4496e-09
+RESULTS
+ 
+ 
+FIXED COEFFICIENTS
+ 
+                      F      
+              ------------------ 
+                Est         SE 
+t_walk        -0.2002     0.0749
+t_wait        -0.1752     0.1267
+drive_ride    -0.0193     0.0399
+tr_ride       -0.0403     0.0434
+share_ride    -0.0230     0.0360
+price         -0.3294     0.1020
+transit       -0.2660     1.1436
+exclusive     -4.2280     1.3735
+pooled        -1.5931     0.9735
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.2002
+   -0.1752
+   -0.0193
+   -0.0403
+   -0.0230
+   -0.3294
+   -0.2660
+   -4.2280
+   -1.5931
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+    0.0056    0.0004    0.0008    0.0005    0.0008    0.0016   -0.0306    0.0196    0.0070
+    0.0004    0.0161    0.0005    0.0005    0.0005    0.0009   -0.0861   -0.0702   -0.0540
+    0.0008    0.0005    0.0016    0.0016    0.0013   -0.0003   -0.0014    0.0020   -0.0021
+    0.0005    0.0005    0.0016    0.0019    0.0012    0.0009    0.0067    0.0086    0.0065
+    0.0008    0.0005    0.0013    0.0012    0.0013   -0.0006   -0.0065   -0.0042   -0.0098
+    0.0016    0.0009   -0.0003    0.0009   -0.0006    0.0104    0.0495    0.0619    0.0715
+   -0.0306   -0.0861   -0.0014    0.0067   -0.0065    0.0495    1.3079    0.7489    0.7905
+    0.0196   -0.0702    0.0020    0.0086   -0.0042    0.0619    0.7489    1.8865    0.8428
+    0.0070   -0.0540   -0.0021    0.0065   -0.0098    0.0715    0.7905    0.8428    0.9476
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+cpt_params_v3
+
+VOT_walking =
+
+  164.5095
+
+
+VOT_waiting =
+
+  188.0605
+
+
+VOT_drive =
+
+   1.7059e+03
+
+
+VOT_transit =
+
+  817.7535
+
+
+VOT_rideshare =
+
+   1.4306e+03
+
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the value of the <a href = "matlab: helpview('optim','function_tolerance_lsq','CSHelpWindow');">function tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit3basic','lsqnonlin'},{'optimlib:snls:Exit3detailed','1.000000e-06'},true,true);;">stopping criteria details</a>>

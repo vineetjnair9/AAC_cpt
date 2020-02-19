@@ -1,0 +1,1031 @@
+Mixed logit of vehicle choice.
+Inputs have been checked and look fine.
+Iteration
+   500
+
+Random coefficients
+RHO       Accept rate
+    0.4190    0.3400
+
+A and Means of B and C:
+   -0.6446   -0.7838    0.8249
+   -4.4917   -4.6076    0.0219
+   -2.0587   -2.0867    0.2184
+   -0.7839   -0.9966   -0.9966
+    0.7326    0.6151    0.6151
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4920
+
+F
+    0.2298
+    0.5981
+
+ 
+Iteration
+        1000
+
+Random coefficients
+RHO       Accept rate
+    0.4570    0.3800
+
+A and Means of B and C:
+   -0.9370   -0.8685    0.8815
+   -4.4852   -4.5069    0.0214
+   -1.7804   -1.7425    0.4130
+   -1.3675   -1.4319   -1.4319
+    0.6537    0.5699    0.5699
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5060
+
+F
+    0.1536
+    0.4976
+
+ 
+Iteration
+        1500
+
+Random coefficients
+RHO       Accept rate
+    0.4610    0.3300
+
+A and Means of B and C:
+   -1.1155   -1.0097    0.7765
+   -5.4399   -5.3470    0.0214
+   -1.5856   -1.6055    0.3255
+   -1.4930   -1.3742   -1.3742
+    0.6163    0.6045    0.6045
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4600
+
+F
+   -0.0089
+    0.5497
+
+ 
+Iteration
+        2000
+
+Random coefficients
+RHO       Accept rate
+    0.4630    0.3500
+
+A and Means of B and C:
+   -0.9333   -0.9065    0.7477
+   -4.4427   -4.4748    0.0183
+   -1.6106   -1.5847    0.4899
+   -1.1693   -1.2229   -1.2229
+    0.7451    0.8248    0.8248
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4880
+
+F
+    0.1541
+    0.4594
+
+ 
+Iteration
+        2500
+
+Random coefficients
+RHO       Accept rate
+    0.4380    0.3100
+
+A and Means of B and C:
+   -1.1142   -1.0743    0.7219
+   -4.7086   -4.6409    0.0191
+   -1.6699   -1.6801    0.2860
+   -1.7229   -1.5619   -1.5619
+    0.3671    0.5450    0.5450
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4700
+
+F
+    0.1997
+    0.4975
+
+ 
+Iteration
+        3000
+
+Random coefficients
+RHO       Accept rate
+    0.4540    0.2500
+
+A and Means of B and C:
+   -1.0757   -1.0151    0.6765
+   -5.0450   -5.0390    0.0224
+   -1.2168   -1.1613    0.4884
+   -1.7677   -1.7023   -1.7023
+    0.2705    0.4922    0.4922
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4980
+
+F
+    0.1383
+    0.5896
+
+ 
+Iteration
+        3500
+
+Random coefficients
+RHO       Accept rate
+    0.4300    0.2500
+
+A and Means of B and C:
+   -0.9638   -0.9783    0.8007
+   -4.3888   -4.4604    0.0253
+   -1.6432   -1.6536    0.4442
+   -1.4406   -1.5659   -1.5659
+    0.4508    0.4960    0.4960
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4580
+
+F
+    0.3288
+    0.4447
+
+ 
+Iteration
+        4000
+
+Random coefficients
+RHO       Accept rate
+    0.4270    0.2700
+
+A and Means of B and C:
+   -1.0808   -1.0624    1.3421
+   -4.5220   -4.6066    0.0353
+   -1.0805   -0.9956    0.7016
+   -1.8830   -1.8881   -1.8881
+    0.5497    0.5578    0.5578
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4780
+
+F
+    0.1351
+    0.5171
+
+ 
+Iteration
+        4500
+
+Random coefficients
+RHO       Accept rate
+    0.4180    0.3100
+
+A and Means of B and C:
+   -0.6573   -0.7754    0.7923
+   -4.9677   -5.0542    0.0132
+   -0.6666   -0.9141    0.7498
+   -1.6812   -1.6589   -1.6589
+    0.9541    0.9260    0.9260
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4200
+
+F
+    0.1378
+    0.4916
+
+ 
+Iteration
+        5000
+
+Random coefficients
+RHO       Accept rate
+    0.4240    0.2000
+
+A and Means of B and C:
+   -1.0704   -0.8602    0.7890
+   -5.1971   -5.0090    0.0268
+   -1.8240   -2.0956    0.4809
+   -1.7323   -1.8121   -1.8121
+    0.5196    0.5675    0.5675
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4780
+
+F
+    0.1512
+    0.5428
+
+ 
+Iteration
+        5500
+
+Random coefficients
+RHO       Accept rate
+    0.4710    0.2600
+
+A and Means of B and C:
+   -0.6546   -0.7822    0.8270
+   -5.0408   -5.0923    0.0178
+   -2.0079   -2.0740    0.2153
+   -0.9780   -1.1460   -1.1460
+    0.8663    0.7580    0.7580
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4920
+
+F
+    0.0500
+    0.7470
+
+ 
+Iteration
+        6000
+
+Random coefficients
+RHO       Accept rate
+    0.4560    0.4100
+
+A and Means of B and C:
+   -0.9762   -0.9559    0.8258
+   -5.3966   -5.2698    0.0193
+   -1.8899   -1.8967    0.3142
+   -1.3411   -1.3770   -1.3770
+    0.4734    0.6299    0.6299
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4760
+
+F
+   -0.0304
+    0.6810
+
+ 
+Iteration
+        6500
+
+Random coefficients
+RHO       Accept rate
+    0.4860    0.2900
+
+A and Means of B and C:
+   -1.0490   -1.0929    0.7219
+   -4.2771   -4.2777    0.0253
+   -2.6607   -2.5461    0.1571
+   -1.4004   -1.3125   -1.3125
+    0.3350    0.4066    0.4066
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4880
+
+F
+   -0.0860
+    0.7251
+
+ 
+Iteration
+        7000
+
+Random coefficients
+RHO       Accept rate
+    0.4650    0.2900
+
+A and Means of B and C:
+   -0.9222   -0.8480    0.7984
+   -5.0694   -5.1302    0.0178
+   -1.8980   -1.8838    0.2795
+   -1.0552   -0.9883   -0.9883
+    0.6327    0.6711    0.6711
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5040
+
+F
+    0.0856
+    0.5708
+
+ 
+Iteration
+        7500
+
+Random coefficients
+RHO       Accept rate
+    0.4470    0.4400
+
+A and Means of B and C:
+   -0.7176   -0.9520    0.9251
+   -5.1737   -5.2568    0.0180
+   -0.9456   -1.0294    0.5328
+   -1.8215   -1.5373   -1.5373
+    0.6085    0.6699    0.6699
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5080
+
+F
+    0.0288
+    0.6501
+
+ 
+Iteration
+        8000
+
+Random coefficients
+RHO       Accept rate
+    0.4510    0.3100
+
+A and Means of B and C:
+   -0.7862   -0.8927    0.7743
+   -5.2869   -5.0955    0.0178
+   -1.1791   -1.2840    0.4227
+   -1.0781   -1.0799   -1.0799
+    0.9303    0.9414    0.9414
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4940
+
+F
+    0.1985
+    0.4339
+
+ 
+Iteration
+        8500
+
+Random coefficients
+RHO       Accept rate
+    0.4580    0.3100
+
+A and Means of B and C:
+   -0.5921   -0.7447    0.9350
+   -4.7074   -4.7731    0.0249
+   -1.5547   -1.5796    0.3095
+   -1.0605   -1.1144   -1.1144
+    0.9607    0.9123    0.9123
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4940
+
+F
+    0.1703
+    0.4928
+
+ 
+Iteration
+        9000
+
+Random coefficients
+RHO       Accept rate
+    0.4530    0.3800
+
+A and Means of B and C:
+   -0.7343   -0.8667    0.8022
+   -4.2340   -4.2325    0.0278
+   -2.0559   -1.9693    0.2263
+   -1.4564   -1.4520   -1.4520
+    0.6145    0.6014    0.6014
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5460
+
+F
+    0.2184
+    0.6540
+
+ 
+Iteration
+        9500
+
+Random coefficients
+RHO       Accept rate
+    0.4530    0.3700
+
+A and Means of B and C:
+   -0.8366   -0.8269    0.8077
+   -4.3439   -4.4659    0.0244
+   -1.5905   -1.5608    0.3475
+   -1.0292   -1.0317   -1.0317
+    0.7156    0.7442    0.7442
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4860
+
+F
+    0.1439
+    0.5170
+
+ 
+Iteration
+       10000
+
+Random coefficients
+RHO       Accept rate
+    0.4570    0.2600
+
+A and Means of B and C:
+   -1.0242   -0.8207    0.7715
+   -4.7963   -4.8372    0.0211
+   -1.8927   -1.8536    0.2874
+   -1.2192   -1.2467   -1.2467
+    0.6929    0.8382    0.8382
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5020
+
+F
+    0.0129
+    0.5379
+
+ 
+Burn-in over. Start saving draws.
+ 
+Iteration
+       10500
+
+Random coefficients
+RHO       Accept rate
+    0.4270    0.3200
+
+A and Means of B and C:
+   -0.8068   -0.7580    0.9274
+   -4.0946   -4.1201    0.0349
+   -1.7640   -1.8076    0.4635
+   -1.9162   -1.7294   -1.7294
+    0.7601    0.6934    0.6934
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5140
+
+F
+    0.0748
+    0.6580
+
+ 
+Iteration
+       11000
+
+Random coefficients
+RHO       Accept rate
+    0.4620    0.2400
+
+A and Means of B and C:
+   -0.6701   -0.8036    0.8569
+   -4.4373   -4.4918    0.0242
+   -1.8835   -1.8876    0.3017
+   -1.0308   -1.0871   -1.0871
+    0.9223    0.8360    0.8360
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5060
+
+F
+    0.2900
+    0.3355
+
+ 
+Iteration
+       11500
+
+Random coefficients
+RHO       Accept rate
+    0.4330    0.3000
+
+A and Means of B and C:
+   -0.5301   -1.0473    0.7843
+   -4.2217   -4.7696    0.0212
+   -1.6298   -1.9509    0.4849
+   -1.7673   -1.8033   -1.8033
+    0.9089    0.5943    0.5943
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5140
+
+F
+    0.1383
+    0.7761
+
+ 
+Iteration
+       12000
+
+Random coefficients
+RHO       Accept rate
+    0.4720    0.3500
+
+A and Means of B and C:
+   -0.8823   -0.9372    0.7080
+   -4.2264   -4.3092    0.0256
+   -1.7847   -1.7720    0.3743
+   -1.9050   -1.7386   -1.7386
+    0.2040    0.3067    0.3067
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5140
+
+F
+    0.1013
+    0.6066
+
+ 
+Iteration
+       12500
+
+Random coefficients
+RHO       Accept rate
+    0.4200    0.3000
+
+A and Means of B and C:
+   -1.0682   -1.2974    0.6636
+   -4.5296   -4.5430    0.0259
+   -1.2117   -1.2694    0.5033
+   -1.6230   -1.6623   -1.6623
+    0.6189    0.5648    0.5648
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4900
+
+F
+    0.1329
+    0.4129
+
+ 
+Iteration
+       13000
+
+Random coefficients
+RHO       Accept rate
+    0.4100    0.3600
+
+A and Means of B and C:
+   -0.9563   -0.9190    0.8391
+   -4.5026   -4.6440    0.0279
+   -0.8773   -0.7023    0.7947
+   -1.9329   -2.0364   -2.0364
+    0.6517    0.6555    0.6555
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4420
+
+F
+    0.0290
+    0.6097
+
+ 
+Iteration
+       13500
+
+Random coefficients
+RHO       Accept rate
+    0.4270    0.3900
+
+A and Means of B and C:
+   -0.7044   -0.7765    0.8179
+   -4.5088   -4.4760    0.0333
+   -1.8073   -1.7029    0.4317
+   -1.8211   -1.6246   -1.6246
+    0.7773    0.7180    0.7180
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4900
+
+F
+    0.1807
+    0.7484
+
+ 
+Iteration
+       14000
+
+Random coefficients
+RHO       Accept rate
+    0.4220    0.3000
+
+A and Means of B and C:
+   -1.1150   -1.0371    0.8081
+   -4.6867   -4.7762    0.0259
+   -1.5413   -1.3499    0.4570
+   -1.4577   -1.5268   -1.5268
+    0.7443    0.6104    0.6104
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4880
+
+F
+    0.2230
+    0.4946
+
+ 
+Iteration
+       14500
+
+Random coefficients
+RHO       Accept rate
+    0.4210    0.2800
+
+A and Means of B and C:
+   -1.0146   -0.9324    0.7284
+   -4.7719   -4.6723    0.0224
+   -0.9870   -0.9465    0.6569
+   -1.7037   -1.8768   -1.8768
+    0.5676    0.6915    0.6915
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4920
+
+F
+    0.0167
+    0.3140
+
+ 
+Iteration
+       15000
+
+Random coefficients
+RHO       Accept rate
+    0.4250    0.2400
+
+A and Means of B and C:
+   -0.8661   -1.0488    0.8509
+   -5.2370   -5.4033    0.0199
+   -1.7007   -1.7609    0.4370
+   -1.6127   -1.4925   -1.4925
+    0.7187    0.6931    0.6931
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4960
+
+F
+   -0.0309
+    0.6964
+
+ 
+Iteration
+       15500
+
+Random coefficients
+RHO       Accept rate
+    0.4330    0.3600
+
+A and Means of B and C:
+   -0.9205   -0.9302    0.9786
+   -5.6910   -5.6281    0.0229
+   -1.2366   -1.1479    0.5249
+   -1.5953   -1.5215   -1.5215
+    0.6726    0.7372    0.7372
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4980
+
+F
+    0.2142
+    0.3883
+
+ 
+Iteration
+       16000
+
+Random coefficients
+RHO       Accept rate
+    0.4540    0.2400
+
+A and Means of B and C:
+   -0.9733   -1.0048    0.7442
+   -5.3056   -5.2055    0.0199
+   -1.7452   -1.6502    0.3514
+   -1.3941   -1.2923   -1.2923
+    0.4026    0.6765    0.6765
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5260
+
+F
+    0.1361
+    0.5827
+
+ 
+Iteration
+       16500
+
+Random coefficients
+RHO       Accept rate
+    0.4550    0.3300
+
+A and Means of B and C:
+   -0.9571   -0.9450    0.6911
+   -5.1616   -5.0330    0.0150
+   -1.3111   -1.3394    0.3556
+   -1.4718   -1.1204   -1.1204
+    0.4340    0.7584    0.7584
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4900
+
+F
+    0.0683
+    0.5494
+
+ 
+Iteration
+       17000
+
+Random coefficients
+RHO       Accept rate
+    0.4400    0.3600
+
+A and Means of B and C:
+   -0.9427   -0.8878    0.8549
+   -4.8290   -4.6416    0.0211
+   -1.8057   -1.8794    0.2134
+   -1.4377   -1.2995   -1.2995
+    0.7262    0.7076    0.7076
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5080
+
+F
+    0.1495
+    0.6414
+
+ 
+Iteration
+       17500
+
+Random coefficients
+RHO       Accept rate
+    0.4170    0.3200
+
+A and Means of B and C:
+   -0.8674   -0.8903    0.7425
+   -6.0734   -6.0961    0.0160
+   -1.6215   -1.4844    0.2993
+   -1.2604   -1.2400   -1.2400
+    0.8595    0.6307    0.6307
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4940
+
+F
+   -0.0702
+    0.6722
+
+ 
+Iteration
+       18000
+
+Random coefficients
+RHO       Accept rate
+    0.4410    0.2000
+
+A and Means of B and C:
+   -0.9643   -0.8846    0.8172
+   -7.1388   -7.1586    0.0220
+   -2.7176   -2.6042    0.1045
+   -0.8968   -0.8603   -0.8603
+    0.9183    1.0311    1.0311
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5000
+
+F
+    0.1455
+    0.4922
+
+ 
+Iteration
+       18500
+
+Random coefficients
+RHO       Accept rate
+    0.4280    0.2700
+
+A and Means of B and C:
+   -1.0124   -0.9364    0.8227
+   -7.3959   -7.1293    0.0232
+   -3.3080   -3.2080    0.1308
+   -0.9933   -1.1779   -1.1779
+    0.6971    0.5830    0.5830
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4900
+
+F
+    0.1952
+    0.4816
+
+ 
+Iteration
+       19000
+
+Random coefficients
+RHO       Accept rate
+    0.4380    0.2500
+
+A and Means of B and C:
+   -1.2568   -1.1789    0.8589
+   -6.7133   -6.6287    0.0192
+   -2.2947   -2.3425    0.3422
+   -1.2683   -1.1246   -1.1246
+    0.5726    0.6748    0.6748
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4840
+
+F
+    0.0798
+    0.6413
+
+ 
+Iteration
+       19500
+
+Random coefficients
+RHO       Accept rate
+    0.4490    0.3200
+
+A and Means of B and C:
+   -0.9015   -0.8405    0.9163
+   -6.4233   -6.4700    0.0138
+   -1.6761   -1.7645    0.3713
+   -1.3977   -1.4158   -1.4158
+    0.7432    0.7211    0.7211
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.4620
+
+F
+    0.0577
+    0.6290
+
+ 
+Iteration
+       20000
+
+Random coefficients
+RHO       Accept rate
+    0.4180    0.3100
+
+A and Means of B and C:
+   -0.5768   -0.8326    0.8756
+   -6.2301   -6.1415    0.0255
+   -2.2029   -2.4647    0.3085
+   -1.3180   -1.2484   -1.2484
+    0.9732    1.0205    1.0205
+
+ 
+Fixed coefficients
+RHOF    Accept rate since last printout
+    0.0100    0.5160
+
+F
+   -0.0207
+    0.7095
+
+ 
+RESULTS
+ 
+ 
+FIXED COEFFICIENTS
+F-hat, se(F-hat)
+From a classical perspective these are estimates and standard errors. 
+From a Bayesian perspective these are mean and std dev of posterior. 
+ 
+ 
+                      F      
+              ------------------ 
+              Est/Mean   SE/StDv 
+hiperf         0.0986     0.0994
+medhiperf      0.5805     0.1050
+ 
+RANDOM COEFFICIENTS
+A-hat, se(A-hat), diag(D-hat), se(diag(D-hat).
+From a classical perspective these are estimates and standard errors. 
+From a Bayesian perspective these are mean and std dev of posterior. 
+ 
+ 
+                      A            Diagonal elements of D
+              ------------------   -----------------------
+              Est/Mean   SE/StDv    Est/Mean   SE/StDv
+price         -0.9056     0.1789     1.5539     0.4182
+opcost        -5.2620     0.9782     3.5568     2.5662
+range         -1.7435     0.5780     1.5896     0.7072
+ev            -1.4121     0.3622     2.0655     0.8431
+hybrid         0.6801     0.2064     1.8305     0.4963
+ 
+D-hat: Estimate of D or mean of posterior of D:
+    1.5539    1.3586    0.4849    0.3225    0.8299
+    1.3586    3.5568    0.7637    0.5022    1.3009
+    0.4849    0.7637    1.5896   -0.0475    0.5476
+    0.3225    0.5022   -0.0475    2.0655    1.0162
+    0.8299    1.3009    0.5476    1.0162    1.8305
+
+Correlations in D-hat
+    1.0000    0.5779    0.3085    0.1800    0.4921
+    0.5779    1.0000    0.3212    0.1853    0.5099
+    0.3085    0.3212    1.0000   -0.0262    0.3210
+    0.1800    0.1853   -0.0262    1.0000    0.5226
+    0.4921    0.5099    0.3210    0.5226    1.0000
+
+Distribution of coefficients in population implied by A-hat and D-hat.
+Uses 2000 draws from N(A-hat,D-hat) and transforms each of them as
+specified in IDV to create draws of coefficients.
+ 
+                            Mean      StdDev     Share<0    Share=0
+price      lognormal       0.8215     1.3402     0.0000     0.0000
+opcost     lognormal       0.0296     0.1252     0.0000     0.0000
+range      lognormal       0.4137     0.8067     0.0000     0.0000
+ev         normal         -1.4304     1.4759     0.8385     0.0000
+hybrid     normal          0.6838     1.3327     0.3050     0.0000
+ 
+Correlation among coefficients
+    1.0000    0.3002    0.2142    0.1000    0.3300
+    0.3002    1.0000    0.2221    0.0663    0.2412
+    0.2142    0.2221    1.0000   -0.0516    0.2007
+    0.1000    0.0663   -0.0516    1.0000    0.5001
+    0.3300    0.2412    0.2007    0.5001    1.0000
+
+ 
+Simulated log-likelihood value at A-hat, D-hat, and F-hat
+based on 2000 draws per person for the random coefficients:
+ -1.2906e+003
+
