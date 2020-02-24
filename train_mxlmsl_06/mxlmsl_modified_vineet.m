@@ -2,6 +2,7 @@
 % Written by Kenneth Train, first version July 19, 2006, 
 %   latest edits August 9, 2006
 
+clc;
 clear;
 
 % Declare GLOBAL variables
@@ -35,12 +36,12 @@ diary myrun.out
 
 % TITLE
 % Put a title for the run in the quotes below, to be printed at the top of the output file.
-disp 'Mixed logit with 100 MLHS draws: 9 fixed'
+disp 'Mixed logit with 100 MLHS draws: 11 fixed'
 
 % DATA
 
 % Number of people (decision-makers) in dataset 
-NP=13;        
+NP=67;        
 
 % Number of choice situations in dataset. This is the number faced by all the people combined.
 NCS=NP*5;     
@@ -67,7 +68,7 @@ NROWS=NCS*4;
 % choice situation.
 % The remaining columns of XMAT can be any variables.
 
-XMAT=load('data_new.txt');  %The variables are described below
+XMAT=load('Xmat.txt');  %The variables are described below
 
 %XMAT(:,4:9)= -XMAT(:,4:9);    %To make price and travel times negative so coef can be positive.
 
@@ -81,16 +82,17 @@ XMAT=load('data_new.txt');  %The variables are described below
 % 1. Person number (1-NP)            MUST BE THIS. DO NOT CHANGE.
 % 2. Choice situation number (1-NCS) MUST BE THIS. DO NOT CHANGE.
 % 3. Chosen alternative (1/0)        MUST BE THIS. DO NOT CHANGE.
-% 4. Negative of waiting time
-% 5. Negative of walking time
-% 6. Negative of drive riding time
-% 7. Negative of transit riding time
-% 8. Negative of rideshare riding time
-% 9. Negative of Price 
-% 10. Driving (1/0)
-% 11. Public transit (1/0)
-% 12. Exclusive rideshare (1/0)
-% 13. Pooled rideshare (1/0)
+% 4. Waiting time
+% 5. Walking time
+% 6. Drive riding time
+% 7. Transit riding time
+% 8. Exclusive rideshare riding time
+% 9. Pooled rideshare riding time
+% 10. Negative of Price 
+% 11. Driving (1/0)
+% 12. Public transit (1/0)
+% 13. Exclusive rideshare (1/0)
+% 14. Pooled rideshare (1/0)
 
 % MODEL SPECIFICATION
 
@@ -156,14 +158,14 @@ W=[];
 % Put semicolons between the numbers.
 % If no fixed coefficients, put IDF=[];
 
-IDF=[4;5;6;7;8;9;11;12;13]; % 10 - driving is reference with ASC = 0
+IDF=[4;5;6;7;8;9;10;11; 12;13;14]; % 11 - driving can be set as reference with ASC = 0
 %IDF=[];
 
 NF=size(IDF,1); %Number of fixed coefficients. Do not change this line.
 
 % Keep ASC_driving as reference/baseline alternative
 % Give a name to each of the variables in IDF.
-NAMESF={'t_walk';'t_wait';'drive_ride';'tr_ride';'share_ride';'price';'transit';'exclusive';'pooled'}; % 'drive';
+NAMESF={'t_walk';'t_wait';'drive_ride';'tr_ride';'exc_rideshare';'pool_rideshare';'price';'drive';'transit';'exclusive';'pooled'}; % ;
 %NAMESF=[];
 
 % Starting values.
@@ -172,7 +174,7 @@ NAMESF={'t_walk';'t_wait';'drive_ride';'tr_ride';'share_ride';'price';'transit';
 % Put semicolons between the elements (so F will be a column vector.)
 
 %F = [];
-F=[0; 0; 0; 0; 0; 0; 0; 0; 0];
+F=[0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0];
 
 % Type of draws to use in simulation
 % 1=pseudo-random draws
@@ -183,7 +185,7 @@ F=[0; 0; 0; 0; 0; 0; 0; 0; 0];
 DRAWTYPE=4;
 
 % Number of draws from to use per person in simulation.
-NDRAWS=10;
+NDRAWS=5000;
 
 % Set seed for the random number generator.
 SEED1 = 14239; 
@@ -240,7 +242,7 @@ IDWGT=[];
 % Maximum number of iterations for the optimization routine.
 % The code will abort after ITERMAX iterations, even if convergence has
 % not been achieved. The default is 400, which is used when MAXITERS=[];
-MAXITERS=1000;
+MAXITERS=5000;
 
 % Convergence criterion based on the maximum change in parameters that is considered
 % to represent convergence. If all the parameters change by less than PARAMTOL 

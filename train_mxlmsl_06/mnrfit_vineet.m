@@ -4,8 +4,7 @@
 % Using MATLAB's mnrfit function directly
 % Assuming all coefficients to vary across modes
 
-%% I - Estimation of mode-choice model
-% Multinomial logit for utility functions
+%% I - Generate data matrix
 
 T = load('Pilotdata0117');
 table_orig = T.Pilotdata117;
@@ -120,6 +119,9 @@ for i = 1:num_responses
         X(5*(i-1) + j,13) = table.Parking_cost(i) + table.Cost_per_mile(i) * table{i,val13} * table.Distance(i);
     end
 end
+
+%% II - Estimation of mode-choice model
+% Multinomial logit for utility functions
 
 Y_resp = categorical(Y);
 [B,dev,stats] = mnrfit(X,Y_resp);

@@ -3,7 +3,7 @@
 % Changes from 1st version
 % (1) Using modified approach of checking verifying whether it's a gain or loss
 % and solving 4x4 non linear system for all 4 parameters at once
-% (2) Using self-reference with SMoDS itself rather than current most common mode
+% (2) Using static self-reference with SMoDS itself rather than current most common mode
 % (3) Simplified calculation of probability weights
 
 % paramhat = load('paramhat.mat');
@@ -15,14 +15,23 @@ walk_time = paramhat(1);
 wait_time = paramhat(2);
 drive_time = paramhat(3);
 transit_time = paramhat(4);
-rideshare_time = paramhat(5);
-price = paramhat(6);
-ASC_drive = 0; % Set as reference/baseline alternative
-ASC_transit = paramhat(7);
-ASC_exclusive = paramhat(8);
-ASC_pooled = paramhat(9);
+exc_time = paramhat(5);
+pool_time = paramhat(6);
+price = paramhat(7);
+ASC_drive = paramhat(8); % Or set = 0 if used as reference/baseline alternative
+ASC_transit = paramhat(9);
+ASC_exclusive = paramhat(10);
+ASC_pooled = paramhat(11);
 
-% Value of time spent on different modes (as % of hourly wage)
+% Value of time (in $/min)
+VOT_walking = abs(price/walk_time)
+VOT_waiting = abs(price/wait_time)
+VOT_drive = abs(price/drive_time)
+VOT_transit = abs(price/transit_time)
+VOT_exc = abs(price/exc_time)
+VOT_pool = abs(price/pool_time)
+
+%% Value of time spent on different modes (as % of hourly wage)
 % Need to adjust regression to account for wages (normalize price variable by income/hourly wage)
 % Annual income --> Hourly wage
 
@@ -41,7 +50,6 @@ table_orig = T.Pilotdata117;
 table = convertvars(table_orig,[2:5,19:26,32:116],'double');
 
 %%
-
 num_responses = size(table,1); % Total no. of survey responses
 scenarios = 5*num_responses; % 5 choice scenarios per respondent
 alternatives = scenarios*4; % 4 alternatives per choice situation
