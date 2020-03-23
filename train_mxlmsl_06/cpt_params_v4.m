@@ -105,6 +105,7 @@ for i = 1:num_responses
         u1 = walk_time * 7 + wait_time * 6 + pool_time * 8 * table.Distance(i) + price * SMODS_cost + ASC_pooled;
         u2 = walk_time * 1 + wait_time * 1 + pool_time * 4 * table.Distance(i) + price * SMODS_cost + ASC_pooled;
         f4 = @(alpha,beta,gamma,lambda) subjectiveU_v3(alpha,beta,gamma,lambda,u1,u2,p4,1-p4,R) - CE;
+        `
         
         fun = @(x) system(f1,f2,f3,f4,x);
         cpt(i,:) = lsqnonlin(fun,[0.5,0.5,0.5,1.5],lb,ub,options);

@@ -3710,4 +3710,32 @@ the value of the <a href = "matlab: helpview('optim','optimality_tolerance_lsq',
 
 <<a href = "matlab: createExitMsg({'optimlib:snls:Exit1basic'},{'optimlib:snls:Exit1detailed','1.499260e-06','1.000000e-05'},true,true);;">stopping criteria details</a>>
 
-<a href = "matlab: helpview('optim','local_min_lsq','
+<a href = "matlab: helpview('optim','local_min_lsq','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','lsq_grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_lsq','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit1basic'},{'optimlib:snls:Exit1detailed','5.293552e-10','1.000000e-05'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_lsq','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','lsq_grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_lsq','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit1basic'},{'optimlib:snls:Exit1detailed','1.269655e-06','1.000000e-05'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_possible_lsq','CSHelpWindow');">Local minimum possible</a>.
+lsqnonlin stopped because the <a href = "matlab: helpview('optim','norm_current_step','CSHelpWindow');">size of the current step</a> is less than
+the value of the <a href = "matlab: helpview('optim','step_size_tol','CSHelpWindow');">step size tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit2basic','lsqnonlin'},{'optimlib:snls:Exit2detailed','9.654456e-07','1.000000e-06'},true,true);;">stopping criteria details</a>>
+
+<a href = "matlab: helpview('optim','local_min_lsq','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','lsq_grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_lsq','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optimlib:snls:Exit1basic'},{'optimlib:snls:Exit1detailed','8.127982e-07','1.000000e-05'},true,true);;">stopping criteria details</a>>
+clc
+clear
+clc
