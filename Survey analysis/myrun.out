@@ -1,0 +1,21 @@
+Mixed logit with 100 MLHS draws: 8 random
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminusub', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m', 16)" style="font-weight:bold">fminusub</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m',16,0)">line 16</a>)
+Objective function is undefined at initial point. Fminunc cannot continue.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminunc', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m', 475)" style="font-weight:bold">fminunc</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m',475,0)">line 475</a>)
+   [x,FVAL,GRAD,HESSIAN,EXITFLAG,OUTPUT] = fminusub(funfcn,x, ...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\doit.m', 120)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\doit.m',120,0)">line 120</a>)
+[paramhat,fval,exitflag,output,grad,hessian]=fminunc(@loglik,param,options);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\mxlmsl_vineet.m', 281)" style="font-weight:bold">mxlmsl_vineet</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\mxlmsl_vineet.m',281,0)">line 281</a>)
+doit
+} 
+clc
