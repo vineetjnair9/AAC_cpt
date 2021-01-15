@@ -36,6 +36,9 @@ for s = 1:n_runs
     %     [params(s,:),std_errors(s,:),LL_final] = mxlmsl_vineet_random(ndraws,draw_type,dist_type,b_init,w_init);
     
     mxlmsl_vineet_random;
+    
+    % But all nodes don't have access to this matrix
+    % Or make it shared memory
     params(s,:) = paramhat; % Need to negate price/time coefficients later on
     std_errors(s,:) = stderr;
     LL_finals(s) = LL_final;
