@@ -1,0 +1,2569 @@
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1            26730                      2.44e+05
+Objective function returned Inf; trying a new point...
+     1           4          21362.9    1.28155e-07       5.49e+04  
+     2           5          20801.3              1       4.16e+04  
+     3           6          18372.3              1       1.41e+05  
+     4           7          15320.1              1       1.88e+05  
+     5           9          12586.9       0.179438       1.74e+05  
+     6          11          11616.6       0.362865       6.02e+04  
+     7          12          11557.8              1       3.03e+04  
+     8          13          11506.1              1       1.27e+04  
+     9          14          11483.5              1       1.14e+04  
+    10          15          11457.1              1       1.52e+04  
+    11          16          11405.8              1        1.1e+04  
+    12          17          11377.4              1       9.11e+03  
+    13          18            11350              1       7.71e+03  
+    14          19          11319.7              1       5.95e+03  
+    15          20          11298.7              1       6.87e+03  
+    16          21          11279.2              1       7.98e+03  
+    17          22            11244              1       1.03e+04  
+    18          23          11171.8              1       1.93e+04  
+    19          24          11035.6              1       3.31e+04  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          25          10858.7              1        3.2e+04  
+    21          26          10754.7              1       1.18e+04  
+    22          27            10737              1       2.18e+03  
+    23          28          10735.8              1            497  
+    24          29          10735.7              1            499  
+    25          30          10735.6              1            502  
+    26          31          10735.1              1            576  
+    27          32            10734              1       1.05e+03  
+    28          33          10731.2              1       1.83e+03  
+    29          34          10723.7              1       3.09e+03  
+    30          35          10704.7              1       5.02e+03  
+    31          36            10658              1       7.74e+03  
+    32          37          10555.4              1       1.07e+04  
+    33          38          10383.5              1        1.2e+04  
+    34          39          10219.2              1       9.67e+03  
+    35          40          10144.5              1       4.25e+03  
+    36          41          10130.6              1            389  
+    37          42            10130              1            153  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','6.267508e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 2.5432 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -10129.9542
+ 
+Taking inverse of hessian for standard errors.
+ 
+The value of grad*inv(hessian)*grad is: 10.0317
+RESULTS
+ 
+ 
+FIXED COEFFICIENTS
+ 
+                      F      
+              ------------------ 
+                Est         SE 
+t_walk         0.0223     0.0008
+t_wait        -0.0185     0.0067
+tr_ride        0.0026     0.0004
+exc_rideshare     0.0058     0.0007
+pool_rideshare     0.0057     0.0004
+price          0.0054     0.0011
+exclusive     -1.1155     0.0384
+pooled        -1.1694     0.0419
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+    0.0223
+   -0.0185
+    0.0026
+    0.0058
+    0.0057
+    0.0054
+   -1.1155
+   -1.1694
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+    0.0000   -0.0000   -0.0000    0.0000    0.0000   -0.0000   -0.0000   -0.0000
+   -0.0000    0.0000    0.0000    0.0000    0.0000    0.0000   -0.0001   -0.0001
+   -0.0000    0.0000    0.0000    0.0000    0.0000    0.0000   -0.0000   -0.0000
+    0.0000    0.0000    0.0000    0.0000    0.0000   -0.0000    0.0000   -0.0000
+    0.0000    0.0000    0.0000    0.0000    0.0000   -0.0000   -0.0000    0.0000
+   -0.0000    0.0000    0.0000   -0.0000   -0.0000    0.0000    0.0000   -0.0000
+   -0.0000   -0.0001   -0.0000    0.0000   -0.0000    0.0000    0.0015    0.0009
+   -0.0000   -0.0001   -0.0000   -0.0000    0.0000   -0.0000    0.0009    0.0018
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 152.630542 seconds.
+clc
+clear
+clc
+Error using optim.internal.problemdef.operator.PowerOperator
+Exponent must be a finite real numeric scalar.
+
+Error in optim.internal.problemdef.Power
+
+Error in .^
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cpt_lottery_v3>value_func', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m', 175)" style="font-weight:bold">cpt_lottery_v3>value_func</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m',175,0)">line 175</a>)
+        V = (u-R).^beta_plus;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cpt_lottery_v3>lottery_obj', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m', 92)" style="font-weight:bold">cpt_lottery_v3>lottery_obj</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m',92,0)">line 92</a>)
+    CE_sR = value_func(x(2),x(3),x(4),CE,R);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cpt_lottery_v3', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m', 22)" style="font-weight:bold">cpt_lottery_v3</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m',22,0)">line 22</a>)
+obj_fun = @(x,respondent_num) lottery_obj(x,respondent_num,table);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cpt_lottery_v3', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m', 27)" style="font-weight:bold">cpt_lottery_v3</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Archive\cpt_lottery_v3.m',27,0)">line 27</a>)
+    [f1,f2,f3,f4,f5,f6,f7,f8,f9,f10] = obj_fun(x,i);
+
+clc
+Starting parallel pool (parpool) using the 'local' profile ...
+Connected to the parallel pool (number of workers: 4).
+Elapsed time is 352.360189 seconds.
+clc
+clear
+clc
+Elapsed time is 60.871716 seconds.
+Unrecognized function or variable 'cpt'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cpt_lottery_v2', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\CPT\cpt_lottery_v2.m', 85)" style="font-weight:bold">cpt_lottery_v2</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\CPT\cpt_lottery_v2.m',85,0)">line 85</a>)
+histogram(cpt(:,4),49);
+
+clc
+help histogram
+ <strong>histogram</strong>  Plots a histogram.
+    <strong>histogram</strong>(X) plots a histogram of X. <strong>histogram</strong> uses an automatic binning 
+    algorithm that returns bins with a uniform width, chosen to cover the 
+    range of elements in X and reveal the underlying shape of the distribution.  
+    X can be of numeric, datetime, or duration types, and can be a vector, 
+    matrix, or multidimensional array. If X is not a vector, then <strong>histogram</strong> 
+    treats it as a single column vector, X(:), and plots a single histogram.
+ 
+    <strong>histogram</strong>(X,M), where M is a scalar, uses M bins.
+ 
+    <strong>histogram</strong>(X,EDGES), where EDGES is a vector, specifies the edges of 
+    the bins.
+ 
+    The value X(i) is in the kth bin if EDGES(k) <= X(i) < EDGES(k+1). The 
+    last bin will also include the right edge such that it will contain X(i)
+    if EDGES(end-1) <= X(i) <= EDGES(end).
+ 
+    <strong>histogram</strong>(...,'BinWidth',BW) uses bins of width BW. If X is datetime, 
+    BW must be a scalar duration or calendarDuration. To prevent from accidentally
+    creating too many bins, a maximum of 65536 bins can be created when
+    specifying 'BinWidth'. If BW is too small such that more bins
+    are needed, <strong>histogram</strong> uses a larger bin width corresponding 
+    to the maximum number of bins.
+ 
+    <strong>histogram</strong>(...,'BinLimits',[BMIN,BMAX]) plots a histogram with only 
+    elements in X between BMIN and BMAX inclusive, X(X>=BMIN & X<=BMAX).
+ 
+    <strong>histogram</strong>(...,'Normalization',NM) specifies the normalization scheme 
+    of the histogram values. The normalization scheme affects the scaling 
+    of the histogram along the vertical axis (or horizontal axis if 
+    Orientation is 'horizontal'). NM can be:
+                   'count'   The height of each bar is the number of 
+                             observations in each bin. The sum of the
+                             bar heights is generally equal to NUMEL(X),
+                             but is less than if some of the input 
+                             data is not included in the bins.
+             'probability'   The height of each bar is the relative 
+                             number of observations (number of observations
+                             in bin / total number of observations), and
+                             the sum of the bar heights is less than or 
+                             equal to 1.
+            'countdensity'   The height of each bar is the number of 
+                             observations in each bin / width of bin. The 
+                             area (height * width) of each bar is the number
+                             of observations in the bin, and the sum of
+                             the bar areas is less than or equal to NUMEL(X). 
+                             This option is not supported for datetime or 
+                             duration data.
+                     'pdf'   Probability density function estimate. The height 
+                             of each bar is, (number of observations in bin)
+                             / (total number of observations * width of bin).
+                             The area of each bar is the relative number of
+                             observations, and the sum of the bar areas is 
+                             less than or equal to 1. This option is not 
+                             supported for datetime or duration data.
+                'cumcount'   The height of each bar is the cumulative 
+                             number of observations in each bin and all
+                             previous bins. The height of the last bar
+                             is less than or equal to NUMEL(X).
+                     'cdf'   Cumulative density function estimate. The height 
+                             of each bar is the cumulative relative number
+                             of observations in each bin and all previous bins.
+                             The height of the last bar is less than or equal 
+                             to 1.
+ 
+    <strong>histogram</strong>(...,'DisplayStyle',STYLE) specifies the display style of the 
+    histogram. STYLE can be:
+                     'bar'   Display a histogram bar plot. This is the default.
+                  'stairs'   Display a stairstep plot, which shows the 
+                             outlines of the histogram without filling the 
+                             interior. 
+ 
+    <strong>histogram</strong>(...,'BinMethod',BM), uses the specified automatic binning 
+    algorithm to determine the number and width of the bins. BM can be:
+                    'auto'   The default 'auto' algorithm chooses a bin 
+                             width to cover the data range and reveal the 
+                             shape of the underlying distribution.
+                   'scott'   Scott's rule is optimal if the data is close  
+                             to being normally distributed, but is also 
+                             appropriate for most other distributions. It 
+                             uses a bin width of 
+                             3.5*STD(X(:))*NUMEL(X)^(-1/3).
+                      'fd'   The Freedman-Diaconis rule is less sensitive  
+                             to outliers in the data, and may be more 
+                             suitable for data with heavy-tailed 
+                             distributions. It uses a bin width of 
+                             2*IQR(X(:))*NUMEL(X)^(-1/3), where IQR is the 
+                             interquartile range.
+                'integers'   The integer rule is useful with integer data, 
+                             as it creates a bin for each integer. It uses 
+                             a bin width of 1 and places bin edges halfway 
+                             between integers. This option is not 
+                             supported for datetime or duration data.
+                 'sturges'   Sturges' rule is a simple rule that is popular
+                             due to its simplicity. It chooses the number 
+                             of bins to be CEIL(1 + LOG2(NUMEL(X))).
+                    'sqrt'   The Square Root rule is another simple rule 
+                             widely used in other software packages. It 
+                             chooses the number of bins to be
+                             CEIL(SQRT(NUMEL(X))).
+    For datetime data, BM can also be the following time units: 'second', 
+    'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year', 'decade', 
+    or 'century'. For duration data, BM can be these time units: 'second', 
+    'minute', 'hour', 'day', 'year'. If BM is a time unit, <strong>histogram</strong> places 
+    bin edges at boundaries of the time unit.
+ 
+    To prevent from accidentally creating too many bins, a maximum of 65536 
+    bins can be created when specifying 'BinMethod'. If the data range is 
+    too large and more bins are needed, <strong>histogram</strong> uses a larger bin width 
+    corresponding to the maximum number of bins.
+ 
+    <strong>histogram</strong>(...,NAME,VALUE) set the property NAME to VALUE. 
+      
+    <strong>histogram</strong>('BinEdges', EDGES, 'BinCounts', COUNTS) where COUNTS is a 
+    vector of length equal to length(EDGES)-1, manually specifies
+    the bin counts. <strong>histogram</strong> plots the counts and does not do any data binning.
+ 
+    <strong>histogram</strong>(AX,...) plots into AX instead of the current axes.
+        
+    H = <strong>histogram</strong>(...) also returns a histogram object. Use this to inspect 
+    and adjust the properties of the histogram.
+ 
+    Class support for inputs X, EDGES:
+       float: double, single
+       integers: uint8, int8, uint16, int16, uint32, int32, uint64, int64
+       logical
+       datetime, duration
+ 
+    See also <a href="matlab:help histcounts">histcounts</a>, <a href="matlab:help histogram2">histogram2</a>, <a href="matlab:help histcounts2">histcounts2</a>, <a href="matlab:help discretize">discretize</a>, <a href="matlab:help matlab.graphics.chart.primitive.Histogram">matlab.graphics.chart.primitive.Histogram</a>
+
+    <a href="matlab:doc histogram">Documentation for histogram</a>
+    <a href="matlab:matlab.internal.language.introspective.overloads.displayOverloads('histogram')">Other functions named histogram</a>
+
+clc
+
+valid_responses =
+
+   69.5288
+
+
+reflection_responses =
+
+   95.0301
+
+
+prob_weighting1_ratio =
+
+   62.6506
+
+
+prob_weighting2_ratio =
+
+   40.5120
+
+
+prob_weighting3_ratio =
+
+   51.0542
+
+
+prob_weighting_any_ratio =
+
+   72.4398
+
+
+mean_ratio =
+
+    3.7254
+
+
+median_ratio =
+
+    1.0250
+
+clc
+IdleTimeout has been reached.
+Parallel pool using the 'local' profile is shutting down.
+      0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+
+LL0s(1) = -39777.3;
+LL0s(2) = -26730;
+clc
+clc
+LL0s(2)
+
+ans =
+
+      -26730
+
+LL_finals(2)
+
+ans =
+
+  -1.0130e+04
+
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          39777.3                       3.2e+05
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('llgrad2', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\llgrad2.m', 66)" style="font-weight:bold">llgrad2</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\llgrad2.m',66,0)">line 66</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('loglik', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\loglik.m', 36)" style="font-weight:bold">loglik</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\loglik.m',36,0)">line 36</a>)
+[p g]=llgrad2(f,b,w);
+
+In lineSearch
+
+In lineSearch
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminusub', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m', 186)" style="font-weight:bold">fminusub</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m',186,0)">line 186</a>)
+          lineSearch(funfcn,x,dir,f,dirDerivative, ...
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminunc', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m', 475)" style="font-weight:bold">fminunc</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m',475,0)">line 475</a>)
+   [x,FVAL,GRAD,HESSIAN,EXITFLAG,OUTPUT] = fminusub(funfcn,x, ...
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 121)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',121,0)">line 121</a>)
+[paramhat,fval,exitflag,output,grad,hessian]=fminunc(@loglik,param,options);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_fixed', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_fixed.m', 248)" style="font-weight:bold">mxlmsl_vineet_fixed</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_fixed.m',248,0)">line 248</a>)
+doit
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('LiveEditorEvaluationHelperESectionEval231db493', 'C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m', 36)" style="font-weight:bold">LiveEditorEvaluationHelperESectionEval231db493</a> (<a href="matlab: opentoline('C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m',36,0)">line 36</a>)
+    mxlmsl_vineet_fixed;
+
+In matlab.internal.editor.evaluateCode
+} 
+clc
+Checking inputs.
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('check', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\check.m', 137)" style="font-weight:bold">check</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\check.m',137,0)">line 137</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 9)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',9,0)">line 9</a>)
+ok=check;
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_fixed', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_fixed.m', 248)" style="font-weight:bold">mxlmsl_vineet_fixed</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_fixed.m',248,0)">line 248</a>)
+doit
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('LiveEditorEvaluationHelperESectionEval231db493', 'C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m', 36)" style="font-weight:bold">LiveEditorEvaluationHelperESectionEval231db493</a> (<a href="matlab: opentoline('C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m',36,0)">line 36</a>)
+    mxlmsl_vineet_fixed;
+
+In matlab.internal.editor.evaluateCode
+} 
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminusub', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m', 16)" style="font-weight:bold">fminusub</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m',16,0)">line 16</a>)
+Objective function is undefined at initial point. Fminunc cannot continue.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminunc', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m', 475)" style="font-weight:bold">fminunc</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m',475,0)">line 475</a>)
+   [x,FVAL,GRAD,HESSIAN,EXITFLAG,OUTPUT] = fminusub(funfcn,x, ...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 121)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',121,0)">line 121</a>)
+[paramhat,fval,exitflag,output,grad,hessian]=fminunc(@loglik,param,options);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_random', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m', 243)" style="font-weight:bold">mxlmsl_vineet_random</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m',243,0)">line 243</a>)
+doit
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('run_msl', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m', 34)" style="font-weight:bold">run_msl</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m',34,0)">line 34</a>)
+    mxlmsl_vineet_random;
+
+clc
+ndraws_vals = 100:100:600;
+draw_types = [1,2,3,4];
+dist_types = [3];
+ndraws_vals = 100:100:600;
+draw_types = [1,2,3,4];
+dist_type = 3;
+
+sz = [length(ndraws_vals),length(draw_types)];
+n_runs = prod(sz);
+clc
+clear
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fwrite')" style="font-weight:bold">fwrite</a>
+Invalid file identifier. Use fopen to generate a valid file identifier.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('makedraws', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\makedraws.m', 115)" style="font-weight:bold">makedraws</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\makedraws.m',115,0)">line 115</a>)
+         fwrite(fid,draws,'double');
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 93)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',93,0)">line 93</a>)
+   DR=makedraws;   %NMEMxNPxNV
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_random', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m', 243)" style="font-weight:bold">mxlmsl_vineet_random</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m',243,0)">line 243</a>)
+doit
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('run_msl', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m', 34)" style="font-weight:bold">run_msl</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m',34,0)">line 34</a>)
+    mxlmsl_vineet_random;
+
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fwrite')" style="font-weight:bold">fwrite</a>
+Invalid file identifier. Use fopen to generate a valid file identifier.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('makedraws', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\makedraws.m', 115)" style="font-weight:bold">makedraws</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\makedraws.m',115,0)">line 115</a>)
+         fwrite(fid,draws,'double');
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 93)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',93,0)">line 93</a>)
+   DR=makedraws;   %NMEMxNPxNV
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_random', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m', 243)" style="font-weight:bold">mxlmsl_vineet_random</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m',243,0)">line 243</a>)
+doit
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('run_msl', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m', 34)" style="font-weight:bold">run_msl</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\run_msl.m',34,0)">line 34</a>)
+    mxlmsl_vineet_random;
+
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1            11005                      1.05e+03
+     1           2          9425.35    0.000949448       1.82e+03  
+     2           3          8548.39              1       1.17e+03  
+     3           5          7586.13             10            644  
+     4           7          7560.14            0.1            603  
+     5           8           7522.8              1            502  
+     6           9          7466.04              1            388  
+     7          10          7296.89              1            258  
+     8          11          7210.22              1            195  
+     9          12          7159.58              1            148  
+    10          13          7133.38              1            114  
+    11          14          7118.63              1           96.1  
+    12          15          7116.99              1           92.3  
+    13          16          7113.47              1           85.3  
+    14          17          7110.15              1           84.8  
+    15          18          7107.66              1           91.9  
+    16          19          7105.59              1             98  
+    17          20          7095.33              1            122  
+    18          21          7084.49              1            138  
+    19          22          7074.57              1            133  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          23          7048.34              1             97  
+    21          24          7025.09              1           60.3  
+    22          25          7010.61              1           58.8  
+    23          26          7008.86              1           62.8  
+    24          27          7008.35              1           63.2  
+    25          28          7007.66              1           62.8  
+    26          29          7006.25              1           61.3  
+    27          30          7002.92              1           57.4  
+    28          31          6996.07              1           49.2  
+    29          32          6984.41              1           35.4  
+    30          33          6971.44              1           16.5  
+    31          34          6964.86              1           9.19  
+    32          35          6963.56              1           3.95  
+    33          36           6963.1              1           1.75  
+    34          37          6963.04              1          0.129  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','1.219121e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 9.7611 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6963.0446
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.6674        Inf     4.0281        Inf
+pooled        -2.1689        Inf     3.3537        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.6680     4.0280     0.6605     0.0000
+pooled     normal         -2.1694     3.3538     0.7411     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.6674
+   -2.1689
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    4.0281
+    3.3537
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 587.896236 seconds.
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 23)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',23,0)">line 23</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_random', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m', 243)" style="font-weight:bold">mxlmsl_vineet_random</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m',243,0)">line 243</a>)
+doit
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('LiveEditorEvaluationHelperESectionEval231db493', 'C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m', 34)" style="font-weight:bold">LiveEditorEvaluationHelperESectionEval231db493</a> (<a href="matlab: opentoline('C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval231db493.m',34,0)">line 34</a>)
+    mxlmsl_vineet_random;
+
+In matlab.internal.editor.evaluateCode
+} 
+clc
+clear
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          11151.2                      1.18e+03
+     1           2          9380.24    0.000849215       1.91e+03  
+     2           3           7779.5              1       1.29e+03  
+     3           4          7646.91              1       2.03e+03  
+     4           5          7136.41              1       1.07e+03  
+     5           7          7030.36       0.298271            586  
+     6           9          7027.11       0.220075            306  
+     7          10          7015.48              1       1.55e+03  
+     8          12          6987.18       0.577196       1.14e+03  
+     9          13          6955.47              1       1.05e+03  
+    10          14          6828.84              1            639  
+    11          15          6763.89              1       1.12e+03  
+    12          16          6748.49              1            424  
+    13          19          6738.14      0.0544077            269  
+    14          20           6736.2              1            360  
+    15          21          6733.15              1            239  
+    16          22          6728.78              1            364  
+    17          24          6645.54        2.26445            717  
+    18          28          6644.23      0.0123028            854  
+    19          30          6622.72        8.82965            671  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          31          6610.58              1            436  
+    21          33          6602.09        2.69665            238  
+    22          35          6585.68              2            245  
+    23          37          6584.86       0.355249            224  
+    24          38          6579.32              1            204  
+    25          40          6577.49       0.112952            350  
+    26          41          6576.12              1           79.5  
+    27          42          6571.72              1            221  
+    28          43          6568.81              1            206  
+    29          45          6565.64        3.25407            165  
+    30          46           6562.6              1            173  
+    31          47          6561.43              1            192  
+    32          50          6561.03      0.0298124            182  
+    33          51          6560.58              1            110  
+    34          52          6559.78              1            110  
+    35          53          6558.67              1            315  
+    36          54          6555.55              1            458  
+    37          56          6547.38             10            989  
+    38          62          6538.11       0.345105            542  
+    39          63          6528.36              1       1.51e+03  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    40          65          6525.66         0.2472       1.07e+03  
+    41          66          6505.06              1       1.38e+03  
+    42          67          6502.62              1       2.33e+03  
+    43          70          6500.52      0.0615294       1.32e+03  
+    44          71          6488.68              1            677  
+    45          72          6478.61              1       1.46e+03  
+    46          74          6472.97       0.416341       1.03e+03  
+    47          75          6471.34              1            786  
+    48          76           6466.5              1            700  
+    49          77          6461.73              1            780  
+    50          79          6458.51       0.316602            344  
+    51          80          6455.15              1            775  
+    52          82          6451.78       0.456173            255  
+    53          83          6449.34              1            436  
+    54          85          6448.92        0.13711            321  
+    55          86          6447.73              1            568  
+    56          87          6446.99              1            387  
+    57          88          6445.58              1            272  
+    58          90          6445.33       0.274732            116  
+    59          91          6444.86              1            166  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    60          93          6444.68       0.211571            267  
+    61          94          6444.44              1           67.2  
+    62          95             6444              1           94.3  
+    63          96          6443.79              1            214  
+    64          98          6443.61       0.313202            115  
+    65          99          6443.51              1            269  
+    66         100          6443.45              1            131  
+    67         101          6443.25              1           66.5  
+    68         102          6443.14              1            154  
+    69         103          6442.95              1            137  
+    70         104          6442.65              1           98.6  
+    71         105           6442.4              1            208  
+    72         106          6442.31              1            131  
+    73         107          6442.15              1            120  
+    74         109          6441.73        2.97537            249  
+    75         110          6440.86              1            571  
+    76         111          6440.28              1            402  
+    77         112          6439.67              1            345  
+    78         115          6439.13        1.71657            454  
+    79         117          6438.99       0.465605            387  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    80         118          6438.54              1            103  
+    81         119          6438.34              1           98.5  
+    82         120          6438.29              1            107  
+    83         121          6438.27              1             49  
+    84         122          6438.26              1           49.1  
+    85         123          6438.25              1           43.4  
+    86         124          6438.24              1           63.1  
+    87         126          6438.17       0.581345            266  
+    88         127          6438.12              1            447  
+    89         128          6437.96              1            290  
+    90         129          6437.78              1           91.9  
+    91         130          6437.73              1           57.6  
+    92         131          6437.71              1           53.1  
+    93         132          6437.71              1           42.7  
+    94         133           6437.7              1           19.5  
+    95         134           6437.7              1           19.7  
+    96         135           6437.7              1             28  
+    97         136          6437.69              1           58.2  
+    98         137          6437.68              1           62.4  
+    99         138          6437.62              1            102  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+   100         139          6437.58              1           68.2  
+   101         140          6437.53              1           14.5  
+   102         141          6437.52              1           14.7  
+   103         142          6437.52              1             10  
+   104         146          6437.51       0.325214             14  
+   105         148          6437.51        0.26958           13.7  
+   106         149          6437.51              1           6.89  
+   107         150          6437.51              1           10.9  
+   108         151          6437.51              1           13.8  
+   109         152          6437.51              1           5.73  
+   110         153          6437.51              1           2.29  
+   111         157          6437.51       0.324028           1.94  
+   112         165          6437.51       0.036626           1.93  
+   113         191          6437.51      0.0030883           17.3  
+
+<a href = "matlab: helpview('optim','local_min_possible','CSHelpWindow');">Local minimum possible</a>.
+
+fminunc stopped because it cannot decrease the objective function
+along the current <a href = "matlab: helpview('optim','search_direction','CSHelpWindow');">search direction</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit5basic','fminunc'},{'optim:fminusub:Exit5detailed'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 30.378 minutes.
+ 
+Convergence not achieved.
+The current value of the parameters and hessian
+can be accesses as variables paramhat and hessian.
+Results are not printed because no convergence.
+Elapsed time is 1822.752363 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1            11005                      1.05e+03
+     1           2           9424.4    0.000949488       1.82e+03  
+     2           3          8706.41              1       1.25e+03  
+     3           5           7621.6             10            590  
+     4           7          7597.26       0.298304            630  
+     5           9          7362.95             10            268  
+     6          10           7259.3              1            210  
+     7          11          7166.39              1            164  
+     8          12          7134.84              1            137  
+     9          13          7122.43              1            114  
+    10          14          7115.99              1           96.4  
+    11          15          7114.48              1           92.6  
+    12          16           7112.7              1           90.9  
+    13          17          7109.83              1           91.6  
+    14          18          7105.87              1           95.9  
+    15          19          7099.81              1            105  
+    16          20          7088.84              1            119  
+    17          21          7069.37              1            127  
+    18          22          7044.71              1           98.1  
+    19          23          7025.13              1             57  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          24          7015.55              1           56.5  
+    21          25          7012.36              1           59.1  
+    22          26          7011.73              1           60.1  
+    23          27           7011.3              1           60.4  
+    24          28          7010.12              1           60.4  
+    25          29          7007.51              1           59.3  
+    26          30          7001.65              1           54.7  
+    27          31          6990.55              1             43  
+    28          32          6976.17              1           21.7  
+    29          33          6968.43              1           9.89  
+    30          34          6967.16              1           5.52  
+    31          35          6966.58              1           2.26  
+    32          36          6966.46              1           0.93  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','8.819396e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 5.9311 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6966.4638
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.7565        Inf     3.8932        Inf
+pooled        -2.1067        Inf     3.4914        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.7572     3.8937     0.6741     0.0000
+pooled     normal         -2.1078     3.4915     0.7269     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.7565
+   -2.1067
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    3.8932
+    3.4914
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 356.395886 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          11004.9                      1.05e+03
+     1           2          9412.64     0.00094947       1.81e+03  
+     2           3          8705.76              1        1.2e+03  
+     3           5          7620.81             10            628  
+     4           7          7601.61        0.29681            659  
+     5           9          7325.96             10            255  
+     6          10          7235.24              1            212  
+     7          11          7185.77              1            168  
+     8          12          7161.41              1            137  
+     9          13          7138.62              1           99.4  
+    10          14          7118.15              1           56.7  
+    11          15          7114.81              1           64.9  
+    12          16          7109.85              1            114  
+    13          17           7108.7              1            101  
+    14          18          7107.47              1           94.8  
+    15          19           7098.6              1           70.6  
+    16          20          7078.28              1           57.6  
+    17          22          7037.26       0.476736           71.7  
+    18          23          7020.28              1           52.5  
+    19          24          7005.54              1           57.3  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          25          7003.05              1           55.9  
+    21          26          7001.96              1           55.9  
+    22          27          7001.58              1           56.1  
+    23          28          7000.93              1           56.6  
+    24          29          6999.74              1           56.3  
+    25          30          6996.49              1           53.3  
+    26          31          6989.74              1             43  
+    27          32          6978.19              1           24.4  
+    28          33          6967.16              1           12.6  
+    29          34          6963.99              1           3.81  
+    30          35          6963.72              1           1.09  
+    31          36           6963.7              1          0.781  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','7.410713e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 5.3797 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6963.695
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.6944        Inf     3.9892        Inf
+pooled        -2.1056        Inf     3.3960        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.6931     3.9893     0.6644     0.0000
+pooled     normal         -2.1058     3.3961     0.7324     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.6944
+   -2.1056
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    3.9892
+    3.3960
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 323.351227 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          11004.9                      1.05e+03
+     1           2          9423.06    0.000949504       1.81e+03  
+     2           3          8850.26              1       1.44e+03  
+     3           6          7651.16        6.97717            795  
+     4           8          7617.15       0.325286            655  
+     5           9          7569.21              1            624  
+     6          10          7427.54              1            412  
+     7          11          7314.22              1            233  
+     8          12          7235.58              1            160  
+     9          13          7145.05              1            101  
+    10          14          7113.65              1           93.6  
+    11          15           7108.8              1           90.3  
+    12          16          7102.58              1             91  
+    13          17          7101.98              1           95.6  
+    14          19          7090.85             10           82.9  
+    15          20          7053.92              1           36.5  
+    16          21          7028.02              1           36.9  
+    17          24          7008.29        0.28569           57.4  
+    18          25           7006.7              1           59.5  
+    19          26          7005.83              1           58.8  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          27          7005.48              1           57.5  
+    21          28           7003.5              1           52.8  
+    22          29          7000.82              1             48  
+    23          30          6997.01              1             44  
+    24          31          6992.61              1           39.8  
+    25          32          6987.25              1             34  
+    26          33          6977.74              1             21  
+    27          34          6969.41              1           8.48  
+    28          35          6967.11              1           1.86  
+    29          36          6966.98              1          0.286  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','2.717531e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 3.9234 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6966.9823
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.6469        Inf     3.9565        Inf
+pooled        -2.0821        Inf     3.3727        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.6482     3.9569     0.6615     0.0000
+pooled     normal         -2.0825     3.3730     0.7315     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.6469
+   -2.0821
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    3.9565
+    3.3727
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 235.660291 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          11005.2                      1.05e+03
+     1           2          9457.85    0.000949539       1.81e+03  
+     2           3          9261.85              1          2e+03  
+     3           6          7703.62        4.60733            823  
+     4           7          7681.31              1            582  
+     5           8          7575.38              1            530  
+     6           9          7432.88              1            340  
+     7          10          7322.62              1            188  
+     8          11          7252.78              1            154  
+     9          12          7174.84              1            119  
+    10          13          7126.05              1           85.6  
+    11          15          7118.47        8.49165            132  
+    12          17          7101.56             10            107  
+    13          18          7058.02              1           73.6  
+    14          19          7045.25              1           47.7  
+    15          20          7033.45              1           60.9  
+    16          22          7031.46       0.353538           70.5  
+    17          23          7030.75              1           65.5  
+    18          24          7030.11              1           62.8  
+    19          25          7027.14              1           53.6  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          26          7021.97              1           41.3  
+    21          27          7011.14              1           43.4  
+    22          28          6996.24              1           38.4  
+    23          29           6986.1              1           15.5  
+    24          30          6984.52              1           5.36  
+    25          31          6984.32              1          0.715  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','6.778516e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 1.0669 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6984.323
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.4802        Inf     3.9733        Inf
+pooled        -2.0746        Inf     3.2532        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.4834     3.9742     0.6454     0.0000
+pooled     normal         -2.0767     3.2530     0.7382     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.4802
+   -2.0746
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    3.9733
+    3.2532
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 64.272373 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1            11005                      1.05e+03
+     1           2          9418.21     0.00094948       1.82e+03  
+     2           3          8461.67              1            970  
+     3           5          7700.86             10            697  
+     4           7          7550.74            0.1            538  
+     5           8          7524.57              1            535  
+     6           9          7459.62              1            444  
+     7          10          7291.77              1            246  
+     8          11          7186.24              1            125  
+     9          12          7139.11              1            127  
+    10          13          7120.75              1            120  
+    11          14          7107.38              1           99.2  
+    12          15          7105.85              1           88.8  
+    13          16          7099.19              1           97.4  
+    14          18          7097.69       0.560075             96  
+    15          20          7091.63             10           79.8  
+    16          21          7075.52              1           39.5  
+    17          22          7064.12              1           37.7  
+    18          23           7032.3              1           36.5  
+    19          24          7014.87              1           54.3  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          25          7007.62              1           50.7  
+    21          26          7004.63              1           54.3  
+    22          27          7001.12              1           58.1  
+    23          28          7000.61              1           57.7  
+    24          29          7000.18              1           56.6  
+    25          30          6999.38              1           55.3  
+    26          31          6996.61              1           50.3  
+    27          32          6990.87              1             41  
+    28          33          6979.17              1           41.9  
+    29          34          6965.58              1           26.3  
+    30          35          6960.22              1           8.66  
+    31          36          6959.65              1           4.05  
+    32          37           6959.5              1           1.33  
+    33          38          6959.47              1           0.27  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','2.559526e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 30.3276 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6959.4709
+ 
+Taking inverse of hessian for standard errors.
+ 
+[Warning: Matrix is singular to working precision.] 
+The value of grad*inv(hessian)*grad is: NaN
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3000        Inf     0.0500        Inf
+t_wait        -0.3000        Inf     0.0500        Inf
+tr_ride       -0.3000        Inf     0.0500        Inf
+exc_rideshare    -0.3000        Inf     0.0500        Inf
+pool_rideshare    -0.3000        Inf     0.0500        Inf
+price         -0.3000        Inf     0.0500        Inf
+exclusive     -1.7405        Inf     3.9474        Inf
+pooled        -2.1457        Inf     3.4274        Inf
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal    -0.0000     0.0000     0.0000     1.0000
+t_wait     truncnormal    -0.0000     0.0000     0.0000     1.0000
+tr_ride    truncnormal    -0.0000     0.0000     0.0000     1.0000
+exc_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+pool_rideshare truncnormal    -0.0000     0.0000     0.0000     1.0000
+price      truncnormal    -0.0000     0.0000     0.0000     1.0000
+exclusive  normal         -1.7405     3.9473     0.6704     0.0000
+pooled     normal         -2.1458     3.4273     0.7343     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -0.3000
+   -1.7405
+   -2.1457
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    0.0500
+    3.9474
+    3.4274
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 1820.758797 seconds.
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1            11151                      1.18e+03
+     1           2           9245.7    0.000849599       4.63e+03  
+     2           4          8479.68       0.349059       1.22e+04  
+     3           5          7689.65              1       1.96e+03  
+     4           8          7224.93            5.5       1.14e+03  
+     5           9          7218.92              1       1.29e+03  
+     6          11          6983.76             10       1.21e+03  
+     7          12          6926.02              1       1.32e+03  
+     8          13          6872.88              1            384  
+     9          15           6844.3       0.432916            687  
+    10          17          6826.61              2            482  
+    11          20          6780.51        3.27008            846  
+    12          22          6771.76       0.273725            858  
+    13          23          6760.72              1            585  
+    14          25          6757.11        0.56942            187  
+    15          26          6752.36              1            205  
+    16          27          6731.51              1            638  
+    17          28          6728.29              1            457  
+    18          29          6726.04              1            232  
+    19          33          6715.94        3.96827            294  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          34          6713.52              1            233  
+    21          35          6713.29              1            184  
+    22          38          6703.74       0.229157            214  
+    23          39          6700.28              1            253  
+    24          40          6676.77              1            319  
+    25          41          6674.62              1            326  
+    26          44          6657.48        2.15456        1.2e+03  
+    27          45          6652.53              1            325  
+    28          46          6640.58              1            450  
+    29          47          6623.54              1            733  
+    30          48          6615.89              1            739  
+    31          50          6611.83       0.248932            256  
+    32          53           6597.9        3.39611            452  
+    33          56           6597.6      0.0155007            267  
+    34          57          6593.14              1            431  
+    35          59          6590.79       0.215438            588  
+    36          60          6589.96              1            442  
+    37          61          6588.65              1            101  
+    38          62          6588.21              1            165  
+    39          63          6587.17              1            619  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    40          64          6584.86              1            706  
+    41          66          6583.25       0.193145            657  
+    42          67          6580.82              1            528  
+    43          69          6577.48       0.339844            275  
+    44          71          6577.05       0.473059            370  
+    45          72          6576.16              1            600  
+    46          73          6575.29              1            456  
+    47          74          6574.58              1            169  
+    48          75          6573.83              1            232  
+    49          76          6573.19              1            208  
+    50          77          6571.77              1            275  
+    51          78          6571.42              1            241  
+    52          79          6571.14              1            148  
+    53          80          6570.93              1           84.4  
+    54          81          6570.65              1           91.8  
+    55          82          6570.52              1           68.4  
+    56          83          6570.34              1           61.9  
+    57          84          6570.16              1            100  
+    58          86          6569.81            0.5            197  
+    59          88          6569.46       0.695492            233  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    60          89          6569.07              1           78.5  
+    61          91          6568.98       0.640434            128  
+    62          92          6568.91              1            143  
+    63          94          6568.88        0.43042            105  
+    64          95          6568.81              1           91.2  
+    65          96          6568.71              1           43.8  
+    66          97          6568.68              1           69.3  
+    67          98          6568.64              1           44.3  
+    68          99          6568.54              1           38.2  
+    69         100          6568.48              1           48.4  
+    70         101          6568.42              1           37.9  
+    71         102          6568.35              1           35.7  
+    72         103          6568.25              1           72.5  
+    73         104          6568.17              1            152  
+    74         105          6568.13              1           21.5  
+    75         106          6568.09              1           17.9  
+    76         107          6567.98              1            108  
+    77         108          6567.86              1            132  
+    78         110          6566.91         2.4155            193  
+    79         112          6566.51       0.577714            157  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    80         113          6566.09              1           88.9  
+    81         114          6565.92              1           47.6  
+    82         115           6565.9              1           35.1  
+    83         116          6565.87              1           8.41  
+    84         117          6565.87              1           30.1  
+    85         118          6565.86              1           5.96  
+    86         119          6565.86              1           5.36  
+    87         120          6565.86              1           4.17  
+    88         123          6565.86        3.07396           9.83  
+    89         124          6565.85              1           5.52  
+    90         125          6565.85              1            4.1  
+    91         126          6565.85              1           5.38  
+    92         127          6565.85              1           6.69  
+    93         129          6565.85       0.434754           27.3  
+    94         130          6565.85              1           40.1  
+    95         131          6565.84              1           36.4  
+    96         132          6565.83              1           21.3  
+    97         133          6565.81              1           15.8  
+    98         134          6565.79              1           10.9  
+    99         135          6565.78              1           13.2  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+   100         136          6565.78              1            2.7  
+   101         137          6565.78              1           1.68  
+   102         138          6565.78              1           4.61  
+   103         139          6565.78              1            1.4  
+   104         140          6565.78              1           1.31  
+   105         161          6565.78       0.180237           1.28  
+
+<a href = "matlab: helpview('optim','local_min_possible','CSHelpWindow');">Local minimum possible</a>.
+
+fminunc stopped because it cannot decrease the objective function
+along the current <a href = "matlab: helpview('optim','search_direction','CSHelpWindow');">search direction</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit5basic','fminunc'},{'optim:fminusub:Exit5detailed'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 18.1386 minutes.
+ 
+Convergence not achieved.
+The current value of the parameters and hessian
+can be accesses as variables paramhat and hessian.
+Results are not printed because no convergence.
+Elapsed time is 1088.322642 seconds.
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          15836.9                      9.74e+04
+     1           2          7074.17    1.02667e-05       1.15e+03  
+     2           3          7030.54              1       1.06e+03  
+     3           4          6932.63              1            607  
+     4           5          6848.35              1            459  
+     5           8          6744.81        26.0738            485  
+     6          11          6743.46      0.0194142       1.07e+03  
+     7          12          6730.41              1            885  
+     8          14          6695.95       0.371107        1.5e+03  
+     9          16          6685.92       0.168856            405  
+    10          20          6664.29        5.97982            343  
+    11          22          6659.93       0.404051            878  
+    12          24          6656.37       0.342346            572  
+    13          25          6649.83              1            428  
+    14          27          6648.32       0.250503            564  
+    15          29          6647.65       0.232977            383  
+    16          30          6645.98              1            292  
+    17          31          6644.44              1            224  
+    18          34          6641.54        3.12121            506  
+    19          35          6639.52              1            156  
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+    20          38          6635.85        3.21293            412  
+    21          39          6631.93              1            514  
+    22          42          6631.36      0.0256907            792  
+    23          43          6627.39              1            832  
+    24          44          6621.21              1            487  
+    25          46          6612.19       0.293928       1.48e+03  
+    26          48           6610.2       0.333379       1.81e+03  
+    27          49          6596.73              1            588  
+    28          50          6594.32              1            356  
+    29          51          6590.55              1            702  
+    30          52          6587.35              1            564  
+    31          53          6583.84              1            717  
+    32          55          6581.96       0.396173            202  
+    33          56          6581.38              1            231  
+    34          57           6581.2              1            114  
+    35          58          6580.76              1           86.6  
+
+<a href = "matlab: helpview('optim','local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview('optim','grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview('optim','optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','8.887490e-04','1.000000e-03'},true,true);;">stopping criteria details</a>>
+ 
+Estimation took 11.289 minutes.
+ 
+Convergence achieved.
+Value of the log-likelihood function at convergence: -6580.7637
+ 
+Taking inverse of hessian for standard errors.
+ 
+The value of grad*inv(hessian)*grad is: -1.669
+RESULTS
+ 
+ 
+RANDOM COEFFICIENTS
+ 
+                      B                      W
+              ------------------   -----------------------
+                 Est     SE            Est         SE
+t_walk        -0.3017     0.0354     0.5757     0.0618
+t_wait        -0.7712     0.0000     0.2547     0.0000
+tr_ride       -0.4802     0.0739     1.0103     0.1440
+exc_rideshare    -0.0552     0.0119     0.3639     0.0285
+pool_rideshare     0.0540     0.0057     0.2621     0.0395
+price         -0.0100     0.0086     1.2641     0.1585
+exclusive     -0.0584     0.0831     0.1451     0.0000
+pooled        -0.3485     0.0817     0.2181     0.0000
+Distribution of coefficients in population implied by B-hat and W-hat.
+using last NMEM draws.
+ 
+                            Mean      StdDev     Share<0    Share=0
+t_walk     truncnormal     0.1096     0.2330     0.0000     0.6999
+t_wait     truncnormal     0.0001     0.0034     0.0000     0.9987
+tr_ride    truncnormal     0.2076     0.4255     0.0000     0.6828
+exc_rideshare truncnormal     0.1193     0.1935     0.0000     0.5603
+pool_rideshare truncnormal     0.1338     0.1711     0.0000     0.4183
+price      truncnormal     0.4992     0.7343     0.0000     0.5032
+exclusive  normal         -0.0584     0.1451     0.6563     0.0000
+pooled     normal         -0.3486     0.2181     0.9450     0.0000
+ 
+ 
+ESTIMATED PARAMETERS AND FULL COVARIANCE MATRIX.
+The estimated values of the parameters are:
+
+paramhat =
+
+   -0.3017
+   -0.7712
+   -0.4802
+   -0.0552
+    0.0540
+   -0.0100
+   -0.0584
+   -0.3485
+    0.5757
+    0.2547
+    1.0103
+    0.3639
+    0.2621
+    1.2641
+    0.1451
+    0.2181
+
+The covariance matrix for these parameters is:
+
+ihess =
+
+  Columns 1 through 13
+
+    0.0013    0.0048    0.0021   -0.0000   -0.0001    0.0000   -0.0012   -0.0012   -0.0021   -0.0013   -0.0042   -0.0005   -0.0011
+    0.0048   -2.6668    0.0072    0.0007   -0.0004    0.0001   -0.0075   -0.0066   -0.0076    1.0981   -0.0143   -0.0038   -0.0043
+    0.0021    0.0072    0.0055   -0.0001   -0.0003    0.0001   -0.0030   -0.0028   -0.0041   -0.0022   -0.0106   -0.0012   -0.0028
+   -0.0000    0.0007   -0.0001    0.0001    0.0000   -0.0000    0.0002    0.0001    0.0001   -0.0002    0.0003   -0.0002    0.0000
+   -0.0001   -0.0004   -0.0003    0.0000    0.0000   -0.0000    0.0002    0.0002    0.0003    0.0001    0.0006    0.0001    0.0001
+    0.0000    0.0001    0.0001   -0.0000   -0.0000    0.0001   -0.0000   -0.0000   -0.0001   -0.0000   -0.0002   -0.0000   -0.0001
+   -0.0012   -0.0075   -0.0030    0.0002    0.0002   -0.0000    0.0069    0.0043    0.0023    0.0018    0.0058    0.0005    0.0015
+   -0.0012   -0.0066   -0.0028    0.0001    0.0002   -0.0000    0.0043    0.0067    0.0022    0.0017    0.0054    0.0006    0.0015
+   -0.0021   -0.0076   -0.0041    0.0001    0.0003   -0.0001    0.0023    0.0022    0.0038    0.0022    0.0081    0.0010    0.0021
+   -0.0013    1.0981   -0.0022   -0.0002    0.0001   -0.0000    0.0018    0.0017    0.0022   -0.4063    0.0044    0.0012    0.0013
+   -0.0042   -0.0143   -0.0106    0.0003    0.0006   -0.0002    0.0058    0.0054    0.0081    0.0044    0.0207    0.0023    0.0055
+   -0.0005   -0.0038   -0.0012   -0.0002    0.0001   -0.0000    0.0005    0.0006    0.0010    0.0012    0.0023    0.0008    0.0007
+   -0.0011   -0.0043   -0.0028    0.0000    0.0001   -0.0001    0.0015    0.0015    0.0021    0.0013    0.0055    0.0007    0.0016
+   -0.0047   -0.0152   -0.0114    0.0004    0.0007   -0.0003    0.0064    0.0058    0.0090    0.0047    0.0224    0.0024    0.0059
+   -0.0001    0.0026   -0.0002    0.0002    0.0001   -0.0000    0.0002    0.0004    0.0003   -0.0007    0.0005   -0.0002    0.0000
+   -0.0005   -0.0080   -0.0015    0.0001    0.0001    0.0000    0.0008    0.0013    0.0011    0.0018    0.0029    0.0002    0.0007
+
+  Columns 14 through 16
+
+   -0.0047   -0.0001   -0.0005
+   -0.0152    0.0026   -0.0080
+   -0.0114   -0.0002   -0.0015
+    0.0004    0.0002    0.0001
+    0.0007    0.0001    0.0001
+   -0.0003   -0.0000    0.0000
+    0.0064    0.0002    0.0008
+    0.0058    0.0004    0.0013
+    0.0090    0.0003    0.0011
+    0.0047   -0.0007    0.0018
+    0.0224    0.0005    0.0029
+    0.0024   -0.0002    0.0002
+    0.0059    0.0000    0.0007
+    0.0251    0.0007    0.0032
+    0.0007   -0.0038   -0.0007
+    0.0032   -0.0007   -0.0070
+
+ 
+You can access the estimated parameters as variable paramhat,
+the gradient of the negative of the log-likelihood function as variable grad,
+the hessian of the negative of the log-likelihood function as variable hessian,
+and the inverse of the hessian as variable ihess.
+The hessian is calculated by the BFGS updating procedure.
+Elapsed time is 678.864935 seconds.
+clc
+ndraws_vals = 100:200:2000;
+dist_types = [2,3,4];
+draw_types = [1,2,3,4];
+b_init_vals = 0.1:0.1:1;
+w_init_vals = 0.01:0.02:0.1;
+
+sz = [length(ndraws_vals),length(dist_types),length(draw_types),...
+    length(b_init_vals),length(w_init_vals)];
+n_runs = prod(sz);
+clear
+clc
+ndraws_vals = 100:200:2000;
+dist_types = [2,3,4];
+draw_types = [1,2,3,4];
+b_init_vals = 0.1:0.1:1;
+w_init_vals = 0.01:0.02:0.1;
+
+sz = [length(ndraws_vals),length(dist_types),length(draw_types),...
+    length(b_init_vals),length(w_init_vals)];
+n_runs = prod(sz);
+ndraws_vals = 100:200:2000;
+dist_types = [2,3,4];
+draw_types = [1,2,3,4];
+b_init_vals = 0.1:0.1:1;
+w_init_vals = 0.01:0.02:0.1;
+
+sz = [length(ndraws_vals),length(dist_types),length(draw_types),...
+    length(b_init_vals),length(w_init_vals)];
+n_runs = prod(sz);
+clear
+cc
+{Unrecognized function or variable 'cc'.
+} 
+clc
+
+n_runs =
+
+        6000
+
+
+n_runs =
+
+        3000
+
+
+n_runs =
+
+        1800
+
+clc
+
+n_runs =
+
+        1440
+
+
+n_runs =
+
+        1080
+
+clc
+Checking inputs.
+Inputs have been checked and look fine.
+Creating data arrays for run.
+Creating draws.
+Start estimation
+The negative of the log-likelihood is minimized,
+which is the same as maximizing the log-likelihood.
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1          15980.9                      9.53e+04
+     1           2          7019.41    1.04897e-05       1.16e+03  
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('trans', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\trans.m', 16)" style="font-weight:bold">trans</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\trans.m',16,0)">line 16</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('llgrad2', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\llgrad2.m', 43)" style="font-weight:bold">llgrad2</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\llgrad2.m',43,0)">line 43</a>)
+c=trans(b,w,DR);   %Transforms draws into random coefficients c is NV x NP x NMEM
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('loglik', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\loglik.m', 36)" style="font-weight:bold">loglik</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\loglik.m',36,0)">line 36</a>)
+[p g]=llgrad2(f,b,w);
+
+In lineSearch
+
+In lineSearch
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminusub', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m', 186)" style="font-weight:bold">fminusub</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\private\fminusub.m',186,0)">line 186</a>)
+          lineSearch(funfcn,x,dir,f,dirDerivative, ...
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('fminunc', 'C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m', 475)" style="font-weight:bold">fminunc</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020b\toolbox\optim\optim\fminunc.m',475,0)">line 475</a>)
+   [x,FVAL,GRAD,HESSIAN,EXITFLAG,OUTPUT] = fminusub(funfcn,x, ...
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('doit', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m', 121)" style="font-weight:bold">doit</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\doit.m',121,0)">line 121</a>)
+[paramhat,fval,exitflag,output,grad,hessian]=fminunc(@loglik,param,options);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mxlmsl_vineet_random', 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m', 243)" style="font-weight:bold">mxlmsl_vineet_random</a> (<a href="matlab: opentoline('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Code\AAC_cpt\Survey analysis\Mode_choice\mxlmsl_vineet_random.m',243,0)">line 243</a>)
+doit
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('LiveEditorEvaluationHelperESectionEval8e6d9ddd', 'C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval8e6d9ddd.m', 37)" style="font-weight:bold">LiveEditorEvaluationHelperESectionEval8e6d9ddd</a> (<a href="matlab: opentoline('C:\Users\vinee\AppData\Local\Temp\Editor_kjebd\LiveEditorEvaluationHelperESectionEval8e6d9ddd.m',37,0)">line 37</a>)
+    mxlmsl_vineet_random;
+
+In matlab.internal.editor.evaluateCode
+} 
+clc
+
+n_runs =
+
+        1080
+
+clear
+clc
+sz
+
+sz =
+
+    10     3     4     3     3
+
+ind2sub(sz,1)
+
+ans =
+
+     1
+

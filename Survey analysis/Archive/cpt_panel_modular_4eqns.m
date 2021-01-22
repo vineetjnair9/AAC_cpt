@@ -42,7 +42,7 @@ panel = @(x,respondent_num) panel_obj(x,respondent_num,table,'dynamic_u0','origi
 
 % Settings for non linear least squares
 lb = [0,0,0,0];
-ub = [1,1,1,1];
+ub = [1,1,1,100];
 x0 = [0.5,0.5,0.5,2];
 
 options_lsq = optimoptions('lsqnonlin','FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'Display','off',...

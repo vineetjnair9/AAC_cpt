@@ -1,8 +1,7 @@
 %% Financial risk parameters (from lottery questions)
 % Problem-based approach for solving nonlinear system of equations
 
-% But optimproblem runs into an error since we're using optimization
-% variables in exponents and if-statements
+% But optimproblem runs into an error since we're using optimization variables in exponents and if-statements
 
 clear;
 T = load('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Data\Panel\Full_launch_6-10_n955');

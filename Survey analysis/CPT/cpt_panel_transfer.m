@@ -1,0 +1,1082 @@
+%% CPT parameters derivation
+
+% Mode-choice parameters
+load('paramhat.mat')
+load('valid_indices.mat')
+
+% Declare GLOBAL variables
+global walk_time wait_time transit_time exc_time pool_time
+global price ASC_transit ASC_exclusive ASC_pooled
+
+walk_time = -paramhat(1);
+wait_time = -paramhat(2);
+transit_time = -paramhat(3);
+exc_time = -paramhat(4);
+pool_time = -paramhat(5);
+price = -paramhat(6);
+ASC_transit = 0; % Baseline
+ASC_exclusive = paramhat(7);
+ASC_pooled = paramhat(8);
+
+disp('Value of time in $/h:')
+VOT_walking = (walk_time/price)*60
+VOT_waiting = (wait_time/price)*60
+VOT_transit = (transit_time/price)*60
+VOT_exc = (exc_time/price)*60
+VOT_pool = (pool_time/price)*60
+
+%% Risk scenarios
+
+T = load('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Data\Panel\Full_launch_6-10_n955');
+table_orig = T.Fulllaunch610n955;
+
+% Vary if table columns change
+table = convertvars(table_orig,[7:8,10:12,48:139],'double');
+num_responses = size(table,1); % Total no. of survey responses
+
+options_lsq = optimoptions('lsqnonlin','FiniteDifferenceStepSize',1e-3,'DiffMinChange',1e-3,...
+    'FiniteDifferenceType','central','MaxFunctionEvaluations',5000,'MaxIterations',4000);
+%'Display','off','FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'DiffMaxChange',1
+
+%% Step 1 - Use financial CPT params & only optimize for determining R 
+
+weight_type = 'original';
+cdf = true;
+static = false;
+
+num_valid = length(valid_indices);
+error1 = zeros(num_valid,1); % Squared 2-norm of residual
+
+if (static) % Optimizing R as static reference 
+    R = zeros(num_valid,1);
+    lb = -10;
+    ub = 0.1;
+    x0 = 10;
+else % Optimizing R as static reference (different for each scenario)
+    R = zeros(num_valid,6);
+    lb = [-10,-10,-10,-10,-10,-10];
+    ub = [10,10,10,10,10,10];
+    x0 = zeros(1,6);
+end
+
+tic
+for i = 1:20
+    if (static) % Optimizing R as static reference 
+        panel = @(x,respondent_num) panel_obj1s(x,cpt_lottery(i,:),respondent_num,table,weight_type,paramhat,cdf);
+    else % Optimizing R as static reference (different for each scenario)
+        panel = @(x,respondent_num) panel_obj1d(x,cpt_lottery(i,:),respondent_num,table,weight_type,paramhat,cdf);
+    end
+    j = valid_indices(i);
+    fun = @(x) panel(x,j);
+    [R(i,:),error1(i)] = lsqnonlin(fun,x0,lb,ub,options_lsq);
+end
+toc
+
+%% Step 2 - Use estimated reference to re-estimate 5 CPT params
+num_valid = length(valid_indices);
+cpt = zeros(num_valid,5);
+error2 = zeros(num_valid,1); % Squared 2-norm of residual
+
+% Settings for non linear least squares
+lb = [0,0,0,0,0];
+ub = [1,1,1,1,1];
+x0 = [0.5,0.5,0.5,0.5,0.5];
+
+tic
+for i = 1:20
+     if (static) % Optimizing R as static reference 
+        panel = @(x,respondent_num) panel_obj2s(x,R(i,:),respondent_num,table,weight_type,paramhat,cdf);
+    else % Optimizing R as static reference (different for each scenario)
+        panel = @(x,respondent_num) panel_obj2d(x,R(i,:),respondent_num,table,weight_type,paramhat,cdf);
+    end
+    j = valid_indices(i);
+    fun = @(x) panel(x,j);
+    [cpt(i,:),error2(i)] = lsqnonlin(fun,x0,lb,ub,options_lsq);
+end
+toc
+
+% With normalized lambda and R
+cpt(:,5) = cpt(:,5) * 100;
+
+%% Step 1 Objective function for determining R (as dynamic)
+function F = panel_obj1d(R,cpt_lottery,respondent_num,table,weight_type,paramhat,cdf)
+    
+    walk_time = -paramhat(1);
+    wait_time = -paramhat(2);
+    transit_time = -paramhat(3);
+    exc_time = -paramhat(4);
+    pool_time = -paramhat(5);
+    price = -paramhat(6);
+    ASC_transit = 0; % Baseline
+    ASC_exclusive = paramhat(7);
+    ASC_pooled = paramhat(8);
+      
+    calc_error = @(CE_sR,u1,u2,p,R) error_func(cpt_lottery,CE_sR,u1,u2,p,R,weight_type,cdf);
+    
+    i = respondent_num;
+    transit_walk = table.transit_walk_1(i) + table.transit_walk_2(i);
+    transit_cost = table.Transit_cost(i);
+
+    SMODS_cost = 2.2 + table.Pool_cost(i)*table.Distance_corrected(i);
+
+    p1 = table.p1(i)/100;
+    p2 = table.p2(i)/100;
+    p3 = table.p3(i)/100;
+    p4 = table.p4(i)/100;
+    p5 = table.p5(i)/100;
+    p6 = table.p6(i)/100;
+
+    if (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Bus')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(1));
+        f1 = calc_error(CE_sR,u1,u2,p1,R(1));
+
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(2));
+        f2 = calc_error(CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(3));
+        f3 = calc_error(CE_sR,u1,u2,p3,R(3));     
+        
+        % Scenario 4     
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(4));
+        f4 = calc_error(CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 8 + transit_time * table.Bus_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(5));
+        f5 = calc_error(CE_sR,u1,u2,p5,R(5));   
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Bus_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(6));
+        f6 = calc_error(CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6]; 
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Subway (T)')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(1));
+        f1 = calc_error(CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(2));
+        f2 = calc_error(CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 8 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(3));
+        f3 = calc_error(CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4  
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(4));
+        f4 = calc_error(CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 4 + transit_time * table.Subway_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(5));
+        f5 = calc_error(CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Subway_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(6));
+        f6 = calc_error(CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Commuter rail')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Rail_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(1));
+        f1 = calc_error(CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 20 + transit_time * table.Rail_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(2));
+        f2 = calc_error(CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_3(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(3));
+        f3 = calc_error(CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_4(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(4));
+        f4 = calc_error(CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(5));
+        f5 = calc_error(CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(6));
+        f6 = calc_error(CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif table.Reference(i) == 'Exclusive ridesharing'
+
+        exc_cost = 2.2 + table.Exc_cost(i) * table.Distance_corrected(i) + 0.42 * table.Exc_driver_wait2(i);
+
+        % Scenario 1
+        % Certainty equivalent - Sure prospect with certain alternative travel options
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Distance_corrected(i) * 5 + price * table.Exc_ref_1(i) + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 4 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(1));
+        f1 = calc_error(CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Exc_ref_2(i) + price * exc_cost * 1.2 + ASC_exclusive;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(2));
+        f2 = calc_error(CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_3(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(3));
+        f3 = calc_error(CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_4(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(4));
+        f4 = calc_error(CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_5(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(5));
+        f5 = calc_error(CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_6(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R(6));
+        f6 = calc_error(CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+    end
+end
+
+%% Step 1 Objective function for determining R (as static)
+function F = panel_obj1s(R,cpt_lottery,respondent_num,table,weight_type,paramhat,cdf)
+
+    walk_time = -paramhat(1);
+    wait_time = -paramhat(2);
+    transit_time = -paramhat(3);
+    exc_time = -paramhat(4);
+    pool_time = -paramhat(5);
+    price = -paramhat(6);
+    ASC_transit = 0; % Baseline
+    ASC_exclusive = paramhat(7);
+    ASC_pooled = paramhat(8);
+      
+    calc_error = @(CE_sR,u1,u2,p,R) error_func(cpt_lottery,CE_sR,u1,u2,p,R,weight_type,cdf);
+    
+    i = respondent_num;
+    transit_walk = table.transit_walk_1(i) + table.transit_walk_2(i);
+    transit_cost = table.Transit_cost(i);
+
+    SMODS_cost = 2.2 + table.Pool_cost(i)*table.Distance_corrected(i);
+
+    p1 = table.p1(i)/100;
+    p2 = table.p2(i)/100;
+    p3 = table.p3(i)/100;
+    p4 = table.p4(i)/100;
+    p5 = table.p5(i)/100;
+    p6 = table.p6(i)/100;
+
+    if (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Bus')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f1 = calc_error(CE_sR,u1,u2,p1,R);
+
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f2 = calc_error(CE_sR,u1,u2,p2,R);  
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f3 = calc_error(CE_sR,u1,u2,p3,R);     
+        
+        % Scenario 4     
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f4 = calc_error(CE_sR,u1,u2,p4,R);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 8 + transit_time * table.Bus_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f5 = calc_error(CE_sR,u1,u2,p5,R);   
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Bus_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f6 = calc_error(CE_sR,u1,u2,p6,R);
+        
+        F = [f1; f2; f3; f4; f5; f6]; 
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Subway (T)')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f1 = calc_error(CE_sR,u1,u2,p1,R);
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f2 = calc_error(CE_sR,u1,u2,p2,R);
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 8 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f3 = calc_error(CE_sR,u1,u2,p,R);
+        
+        % Scenario 4  
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f4 = calc_error(CE_sR,u1,u2,p3,R);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 4 + transit_time * table.Subway_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f5 = calc_error(CE_sR,u1,u2,p4,R);
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Subway_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE);
+        f6 = calc_error(CE_sR,u1,u2,p5,R);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Commuter rail')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Rail_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f1 = calc_error(CE_sR,u1,u2,p1,R);
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 20 + transit_time * table.Rail_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f2 = calc_error(CE_sR,u1,u2,p2,R);
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_3(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f3 = calc_error(CE_sR,u1,u2,p3,R);
+        
+        % Scenario 4      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_4(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE);
+        f4 = calc_error(CE_sR,u1,u2,p4,R);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f5 = calc_error(CE_sR,u1,u2,p5,R);
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f6 = calc_error(CE_sR,u1,u2,p6,R);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif table.Reference(i) == 'Exclusive ridesharing'
+
+        exc_cost = 2.2 + table.Exc_cost(i) * table.Distance_corrected(i) + 0.42 * table.Exc_driver_wait2(i);
+
+        % Scenario 1
+        % Certainty equivalent - Sure prospect with certain alternative travel options
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Distance_corrected(i) * 5 + price * table.Exc_ref_1(i) + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 4 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f1 = calc_error(CE_sR,u1,u2,p1,R);
+        
+        % Scenario 2
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Exc_ref_2(i) + price * exc_cost * 1.2 + ASC_exclusive;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f2 = calc_error(CE_sR,u1,u2,p2,R);
+        
+        % Scenario 3
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_3(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f3 = calc_error(CE_sR,u1,u2,p3,R);
+        
+        % Scenario 4
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_4(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f4 = calc_error(CE_sR,u1,u2,p4,R);
+        
+        % Scenario 5
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_5(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f5 = calc_error(CE_sR,u1,u2,p5,R);
+        
+        % Scenario 6
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_6(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(cpt_lottery,CE,R);
+        f6 = calc_error(CE_sR,u1,u2,p6,R);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+    end
+end
+
+%% Step 2 Objective function for CPT params (using dynamic R determined above)
+function F = panel_obj2d(x,R,respondent_num,table,weight_type,paramhat,cdf)
+    
+    % Rescale lambda
+    x(5) = x(5) * 100;
+
+    walk_time = -paramhat(1);
+    wait_time = -paramhat(2);
+    transit_time = -paramhat(3);
+    exc_time = -paramhat(4);
+    pool_time = -paramhat(5);
+    price = -paramhat(6);
+    ASC_transit = 0; % Baseline
+    ASC_exclusive = paramhat(7);
+    ASC_pooled = paramhat(8);
+      
+    calc_error = @(x,CE_sR,u1,u2,p,R) error_func(x,CE_sR,u1,u2,p,R,weight_type,cdf);
+    
+    i = respondent_num;
+    transit_walk = table.transit_walk_1(i) + table.transit_walk_2(i);
+    transit_cost = table.Transit_cost(i);
+
+    SMODS_cost = 2.2 + table.Pool_cost(i)*table.Distance_corrected(i);
+
+    p1 = table.p1(i)/100;
+    p2 = table.p2(i)/100;
+    p3 = table.p3(i)/100;
+    p4 = table.p4(i)/100;
+    p5 = table.p5(i)/100;
+    p6 = table.p6(i)/100;
+
+    if (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Bus')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(1));
+        f1 = calc_error(x,CE_sR,u1,u2,p1,R(1));
+
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(2));
+        f2 = calc_error(x,CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(3));
+        f3 = calc_error(x,CE_sR,u1,u2,p3,R(3));     
+        
+        % Scenario 4     
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(4));
+        f4 = calc_error(x,CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 8 + transit_time * table.Bus_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(5));
+        f5 = calc_error(x,CE_sR,u1,u2,p5,R(5));   
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Bus_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(6));
+        f6 = calc_error(x,CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6]; 
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Subway (T)')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(1));
+        f1 = calc_error(x,CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(2));
+        f2 = calc_error(x,CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 8 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(3));
+        f3 = calc_error(x,CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4  
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(4));
+        f4 = calc_error(x,CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 4 + transit_time * table.Subway_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(5));
+        f5 = calc_error(x,CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Subway_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(6));
+        f6 = calc_error(x,CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Commuter rail')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Rail_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(1));
+        f1 = calc_error(x,CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 20 + transit_time * table.Rail_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(2));
+        f2 = calc_error(x,CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_3(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(3));
+        f3 = calc_error(x,CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_4(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(4));
+        f4 = calc_error(x,CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(5));
+        f5 = calc_error(x,CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(6));
+        f6 = calc_error(x,CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif table.Reference(i) == 'Exclusive ridesharing'
+
+        exc_cost = 2.2 + table.Exc_cost(i) * table.Distance_corrected(i) + 0.42 * table.Exc_driver_wait2(i);
+
+        % Scenario 1
+        % Certainty equivalent - Sure prospect with certain alternative travel options
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Distance_corrected(i) * 5 + price * table.Exc_ref_1(i) + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 4 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(1));
+        f1 = calc_error(x,CE_sR,u1,u2,p1,R(1));
+        
+        % Scenario 2
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Exc_ref_2(i) + price * exc_cost * 1.2 + ASC_exclusive;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(2));
+        f2 = calc_error(x,CE_sR,u1,u2,p2,R(2));
+        
+        % Scenario 3
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_3(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(3));
+        f3 = calc_error(x,CE_sR,u1,u2,p3,R(3));
+        
+        % Scenario 4
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_4(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R(4));
+        f4 = calc_error(x,CE_sR,u1,u2,p4,R(4));
+        
+        % Scenario 5
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_5(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(5));
+        f5 = calc_error(x,CE_sR,u1,u2,p5,R(5));
+        
+        % Scenario 6
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_6(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R(6));
+        f6 = calc_error(x,CE_sR,u1,u2,p6,R(6));
+        
+        F = [f1; f2; f3; f4; f5; f6];
+    end
+end
+
+%% Step 2 Objective function for CPT params (using static R determined above)
+function F = panel_obj2s(x,R,respondent_num,table,weight_type,paramhat,cdf)
+    
+    % Rescale lambda
+    x(5) = x(5) * 100;
+
+    walk_time = -paramhat(1);
+    wait_time = -paramhat(2);
+    transit_time = -paramhat(3);
+    exc_time = -paramhat(4);
+    pool_time = -paramhat(5);
+    price = -paramhat(6);
+    ASC_transit = 0; % Baseline
+    ASC_exclusive = paramhat(7);
+    ASC_pooled = paramhat(8);
+      
+    calc_error = @(x,CE_sR,u1,u2,p) error_func(x,CE_sR,u1,u2,p,R,weight_type,cdf);
+    
+    i = respondent_num;
+    transit_walk = table.transit_walk_1(i) + table.transit_walk_2(i);
+    transit_cost = table.Transit_cost(i);
+
+    SMODS_cost = 2.2 + table.Pool_cost(i)*table.Distance_corrected(i);
+
+    p1 = table.p1(i)/100;
+    p2 = table.p2(i)/100;
+    p3 = table.p3(i)/100;
+    p4 = table.p4(i)/100;
+    p5 = table.p5(i)/100;
+    p6 = table.p6(i)/100;
+
+    if (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Bus')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f1 = calc_error(x,CE_sR,u1,u2,p1);
+
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Bus_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f2 = calc_error(x,CE_sR,u1,u2,p2);
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f3 = calc_error(x,CE_sR,u1,u2,p3);     
+        
+        % Scenario 4     
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Bus_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f4 = calc_error(x,CE_sR,u1,u2,p4,R);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 8 + transit_time * table.Bus_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f5 = calc_error(x,CE_sR,u1,u2,p5);   
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Bus_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f6 = calc_error(x,CE_sR,u1,u2,6);
+        
+        F = [f1; f2; f3; f4; f5; f6]; 
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Subway (T)')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f1 = calc_error(x,CE_sR,u1,u2,p1);
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 9 + transit_time * table.Subway_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 2 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 1 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f2 = calc_error(x,CE_sR,u1,u2,p2);
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_3(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 8 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f3 = calc_error(x,CE_sR,u1,u2,p3);
+        
+        % Scenario 4  
+        CE = walk_time * transit_walk * 0.9 + wait_time * 1 + transit_time * table.Subway_ref_4(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f4 = calc_error(x,CE_sR,u1,u2,p4);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 4 + transit_time * table.Subway_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f5 = calc_error(x,CE_sR,u1,u2,p5);
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 5 + transit_time * table.Subway_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f6 = calc_error(x,CE_sR,u1,u2,p6);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Commuter rail')
+
+        % Scenario 1
+        CE = walk_time * transit_walk * 1.1 + wait_time * 15 + transit_time * table.Rail_ref_1(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f1 = calc_error(x,CE_sR,u1,u2,p1);
+        
+        % Scenario 2
+        CE = walk_time * transit_walk * 1.1 + wait_time * 20 + transit_time * table.Rail_ref_2(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f2 = calc_error(x,CE_sR,u1,u2,p2);
+        
+        % Scenario 3      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_3(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f3 = calc_error(x,CE_sR,u1,u2,p3);
+        
+        % Scenario 4      
+        CE = walk_time * transit_walk * 0.9 + wait_time * 2 + transit_time * table.Rail_ref_4(i) + price * transit_cost + ASC_transit;        
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f4 = calc_error(x,CE_sR,u1,u2,p4);
+        
+        % Scenario 5
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_5(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f5 = calc_error(x,CE_sR,u1,u2,p5);
+        
+        % Scenario 6
+        CE = walk_time * transit_walk + wait_time * 10 + transit_time * table.Rail_ref_6(i) + price * transit_cost + ASC_transit;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f6 = calc_error(x,CE_sR,u1,u2,p6);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+
+    elseif table.Reference(i) == 'Exclusive ridesharing'
+
+        exc_cost = 2.2 + table.Exc_cost(i) * table.Distance_corrected(i) + 0.42 * table.Exc_driver_wait2(i);
+
+        % Scenario 1
+        % Certainty equivalent - Sure prospect with certain alternative travel options
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Distance_corrected(i) * 5 + price * table.Exc_ref_1(i) + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 4 + wait_time * 1 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f1 = calc_error(x,CE_sR,u1,u2,p1);
+        
+        % Scenario 2
+        CE = walk_time * 0 + wait_time * 9 + exc_time * table.Exc_ref_2(i) + price * exc_cost * 1.2 + ASC_exclusive;
+        u1 = walk_time * 2 + wait_time * 4 + pool_time * 4.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 3 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost * 0.8 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f2 = calc_error(x,CE_sR,u1,u2,p2);
+        
+        % Scenario 3
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_3(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 4 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 5 + wait_time * 6 + pool_time * 6.5 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f3 = calc_error(x,CE_sR,u1,u2,p3);
+        
+        % Scenario 4
+        CE = walk_time * 0 + wait_time * 1 + exc_time * table.Exc_ref_4(i) + price * exc_cost * 0.8 + ASC_exclusive;
+        u1 = walk_time * 6 + wait_time * 5 + pool_time * 7 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        u2 = walk_time * 9 + wait_time * 4 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost * 1.2 + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f4 = calc_error(x,CE_sR,u1,u2,p4);
+        
+        % Scenario 5
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_5(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 7 + wait_time * 6 + pool_time * 6 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 2 + wait_time * 3 + pool_time * 3 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f5 = calc_error(x,CE_sR,u1,u2,p5);
+        
+        % Scenario 6
+        CE = walk_time * 0 + wait_time * 5 + exc_time * table.Exc_ref_6(i) + price * exc_cost + ASC_exclusive;
+        u1 = walk_time * 5 + wait_time * 6 + pool_time * 5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        u2 = walk_time * 3 + wait_time * 2 + pool_time * 3.5 * table.Distance_corrected(i) + price * SMODS_cost + ASC_pooled;
+        CE_sR = value_func(x,CE,R);
+        f6 = calc_error(x,CE_sR,u1,u2,p6);
+        
+        F = [f1; f2; f3; f4; f5; f6];
+    end
+end
+
+%% Calculate error for nonlinear equation
+function error = error_func(x,CE_actual,u1,u2,p,R,weight_type,cdf)
+    CE_pred = subjective(x,u1,u2,p,R,weight_type,cdf);
+    
+    % No normalization 
+%     error = CE_pred - CE_actual;
+    
+    % With normalization
+    if (CE_actual == 0)
+        error = abs(CE_pred - CE_actual);
+    else         
+        % Taking relative error w.r.t true value (CE_sR)
+        error = (CE_pred - CE_actual)/CE_actual;
+
+      % Taking relative error w.r.t max subjective value
+%         error = (CE_pred - CE_actual)/max([abs(CE_pred),abs(CE_actual)]);        
+    end
+
+end
+
+%% Calculating subjective utilities
+function U_sR = subjective(x,u1,u2,p1,R,weight_type,cdf) 
+
+    alpha_plus = x(1); alpha_minus = x(2); 
+    V = @(u) value_func(x,u,R);
+    u = [u1,u2];
+    p_vals = [p1,1-p1];
+
+    [u_low,ind_low] = min(u);
+    [u_high,~] = max(u);
+
+    p = p_vals(ind_low);
+
+    w = weights(p,u_low,u_high,R,alpha_plus,alpha_minus,weight_type,cdf);
+    U_sR = w(1) * V(u_low) + w(2) * V(u_high);
+end
+    
+%% Value function
+function V = value_func(x,u,R)
+    
+    beta_plus = x(3); beta_minus = x(4); lambda = x(5);
+    if (u >= R)
+        V = (u-R)^beta_plus;
+    else
+        V = -lambda*(R-u)^beta_minus;
+    end
+end
+
+%% Calculating subjective weights
+function w = weights(p,u1,u2,R,alpha_plus,alpha_minus,weight_type,cdf)
+    F = @(u) bernoulli_cdf(p,u,u1,u2);
+    pi_gain = @(x) distort_gain(x,alpha_plus,weight_type);
+    pi_loss = @(x) distort_loss(x,alpha_minus,weight_type);
+    
+    if (cdf)
+        if (u1 < R)
+            w(1) = pi_loss(F(u1));
+        else
+            w(1) = 1 - pi_gain(1-F(u1));
+        end
+
+        if (u2 < R) 
+            w(2) = pi_loss(F(u2)) - pi_loss(F(u1));
+        else
+            w(2) = pi_gain(1-F(u1)) - pi_gain(1-F(u2));
+        end
+    else
+        if (u1 < R)
+            w(1) = pi_loss(p);
+        else
+            w(1) = pi_gain(p);
+        end
+    
+        if (u2 < R)
+            w(2) = pi_loss(1-p);
+        else
+            w(2) = pi_gain(1-p);
+        end
+    end
+end
+
+%% Bernoulli CDF (binomial distribution with only 1 trial & 2 outcomes)
+function F = bernoulli_cdf(p,u,u1,u2)
+    if (u < u1)
+        F = 0;
+    elseif (u >= u1 && u < u2)
+        F = p;
+    else
+        F = 1;
+    end
+end
+        
+%% Probability weighting function
+function pi = distort_gain(p,alpha_plus,weight_type)
+    if strcmp(weight_type,'original')
+        pi = exp(-(-log(p))^alpha_plus);
+    elseif strcmp(weight_type,'modified')
+        pi = (p^alpha_plus)/(p^alpha_plus + (1-p)^alpha_plus)^(1/alpha_plus);
+    end
+end
+
+function pi = distort_loss(p,alpha_minus,weight_type)
+    if strcmp(weight_type,'original')
+        pi = exp(-(-log(p))^alpha_minus);
+    elseif strcmp(weight_type,'modified')
+        pi = (p^alpha_minus)/(p^alpha_minus + (1-p)^alpha_minus)^(1/alpha_minus);
+    end
+end
