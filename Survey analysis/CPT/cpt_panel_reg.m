@@ -47,7 +47,7 @@ R_type = 'dynamic_SMoDS';
 reg = [sqrt(5); sqrt(5)]; % lambda1, lambda2
 
 % Settings for non linear least squares
-lb = [0,0,0,0,0];
+lb = [0,0,0,0,0.01];
 ub = [1,1,1,1,1];
 x0 = [0.5,0.5,0.5,0.5,0.5];
 
@@ -312,7 +312,7 @@ function F = panel_obj(x,respondent_num,table,R_type,weight_type,paramhat,cdf,re
     end
     
     x(5) = x(5)/100;
-    F = [f1; f2; f3; f4; f5; f6; reg.*[sqrt(norm(x-lb)); sqrt(norm(x-ub))]];
+    F = [f1; f2; f3; f4; f5; f6; reg.*[norm(x-lb); norm(x-ub)]];
     
 end
 

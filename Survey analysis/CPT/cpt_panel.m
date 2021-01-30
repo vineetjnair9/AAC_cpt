@@ -20,7 +20,9 @@ ASC_transit = 0; % Baseline
 ASC_exclusive = paramhat(7);
 ASC_pooled = paramhat(8);
 
-% Value of time (in $/min)
+load('valid_indices.mat');
+
+%% Value of time (in $/min)
 VOT_walking = walk_time/price;
 VOT_waiting = wait_time/price;
 VOT_transit = transit_time/price;
@@ -51,60 +53,73 @@ table_orig = T.Fulllaunch610n955;
 
 % Vary if table columns change
 table = convertvars(table_orig,[7:8,10:12,48:139],'double');
-[cpt,resnorm] = estimate_params(table,'dynamic_u0','original',paramhat,'lsq');
+[cpt,resnorm] = estimate_params(table,'dynamic_u0','original',paramhat,valid_indices);
 
 % R_type = dynamic_u0, dynamic_SMoDS
 % weighting = original, modified
 % optimization method = 'lsq' (nonlinear least squares), 'grid' (grid search), 'newton', 'global-opt' (Global optimization toolbox)
 
 %% Scatter plots
-respondents = 1:1:size(table,1);
+respondents = 1:1:length(valid_indices);
+respondents = respondents';
+error = resnorm;
 
 figure(1)
 scatter(respondents,cpt(:,1))
-ylabel('\alpha')
-xlabel('Respondent')
+ylabel('$\alpha$','Interpreter','latex')
+xlabel('Respondent','Interpreter','latex')
 
 figure(2)
 scatter(respondents,cpt(:,2))
-ylabel('\beta^+')
-xlabel('Respondent')
+ylabel('$\beta^+$','Interpreter','latex')
+xlabel('Respondent','Interpreter','latex')
 
 figure(3)
 scatter(respondents,cpt(:,3))
-ylabel('\beta^-')
-xlabel('Respondent')
+ylabel('$\beta^-$','Interpreter','latex')
+xlabel('Respondent','Interpreter','latex')
 
 figure(4)
 scatter(respondents,cpt(:,4))
-ylabel('\lambda')
-xlabel('Respondent')
+ylabel('$\lambda$','Interpreter','latex')
+xlabel('Respondent','Interpreter','latex')
 
 figure(5)
-scatter(respondents,resnorm)
-ylabel('Squared norm of residual')
-xlabel('Respondent')
+scatter(respondents,error)
+ylabel('Sum of squared errors','Interpreter','latex')
+xlabel('Respondent','Interpreter','latex')
 
 %% Histograms
+dir = 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\SM Thesis\Figures\CPT_panel_init\';
 figure(1)
-histogram(cpt(:,1),10);
-xlabel('\alpha')
-ylabel('Number of respondents');
+histogram(cpt(:,1));
+xlabel('$\alpha$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'cpt_panel_init_alpha_hist.png']);
+exportgraphics(gcf,name,'Resolution',300)
+% InSet = get(gca, 'TightInset');
+% set(gca, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)]);
 
 figure(2)
-histogram(cpt(:,2),10);
-xlabel('\beta^+')
-ylabel('Number of respondents');
+histogram(cpt(:,2));
+xlabel('$\beta^+$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'cpt_panel_init_beta+_hist.png']);
+exportgraphics(gcf,name,'Resolution',300)
 
 figure(3)
-histogram(cpt(:,3),10);
-xlabel('\beta^-')
-ylabel('Number of respondents');
+histogram(cpt(:,3));
+xlabel('$\beta^-$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'cpt_panel_init_beta-_hist.png']);
+exportgraphics(gcf,name,'Resolution',300)
 
 figure(4)
-histogram(cpt(:,4),49);
-xlabel('\lambda')
-ylabel('Number of respondents');
+histogram(cpt(:,4));
+xlabel('$\lambda$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'cpt_panel_init_lambda_hist.png']);
+exportgraphics(gcf,name,'Resolution',300)
 
 %% Population averages
 %% Mean
@@ -140,23 +155,22 @@ lambda = std(cpt(:,4))
 %% Standard errors
 
 %% CPT estimation function
-function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,method)
+function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,valid_indices)
 
-    walk_time = -paramhat(1);
-    wait_time = -paramhat(2);
-    transit_time = -paramhat(3);
-    exc_time = -paramhat(4);
-    pool_time = -paramhat(5);
-    price = -paramhat(6);
+    walk_time = paramhat(1);
+    wait_time = paramhat(2);
+    transit_time = paramhat(3);
+    exc_time = paramhat(4);
+    pool_time = paramhat(5);
+    price = paramhat(6);
     ASC_transit = 0; % Baseline
     ASC_exclusive = paramhat(7);
     ASC_pooled = paramhat(8);
-    num_responses = size(table,1); % Total no. of survey responses
-
+    num_valid = length(valid_indices);
+    
     % Each row gives risk attitude parameters - alpha, beta+, beta-, lambda
-    cpt = zeros(num_responses,4);
-    resnorm = zeros(num_responses,1); % Squared 2-norm of residual
-    residual = zeros(num_responses,4); % Residual
+    cpt = zeros(num_valid,4);
+    resnorm = zeros(num_valid,1); % Squared 2-norm of residual
         
     ref = @(u1,u2,p,CE) reference(u1,u2,p,R_type,CE);
     sub = @(alpha,beta_plus,beta_minus,lambda,u1,u2,p,R) subjective(alpha,beta_plus,beta_minus,lambda,u1,u2,p,R,weight_type);
@@ -166,14 +180,11 @@ function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,metho
     ub = [1,1,1,100];
     x0 = [0.5,0.5,0.5,1.5];
     
-    if strcmp(method,'lsq')
-        options = optimoptions('lsqnonlin','FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'Display','off');
-    elseif strcmp(method,'global_opt')
-        
-    end
+    options = optimoptions('lsqnonlin','FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'Display','off');
     
-    parfor i = 1:num_responses
-              
+    for j = 1:num_valid
+        i = valid_indices(j);      
+        
         transit_walk = table.transit_walk_1(i) + table.transit_walk_2(i);
         transit_cost = table.Transit_cost(i);
         
@@ -237,7 +248,7 @@ function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,metho
             f6 = @(alpha,beta_plus,beta_minus,lambda) sub(alpha,beta_plus,beta_minus,lambda,u1,u2,p6,R) + CE_sR(alpha,beta_plus,beta_minus,lambda);
 
             fun = @(x) system(f1,f2,f3,f4,f5,f6,x);
-            [cpt(i,:),resnorm(i)] = lsqnonlin(fun,x0,lb,ub,options);
+            [cpt(j,:),resnorm(j)] = lsqnonlin(fun,x0,lb,ub,options);
 
         elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Subway (T)')
 
@@ -290,7 +301,7 @@ function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,metho
             f6 = @(alpha,beta_plus,beta_minus,lambda) sub(alpha,beta_plus,beta_minus,lambda,u1,u2,p6,R) + CE_sR(alpha,beta_plus,beta_minus,lambda);
 
             fun = @(x) system(f1,f2,f3,f4,f5,f6,x);
-            [cpt(i,:),resnorm(i)] = lsqnonlin(fun,x0,lb,ub,options);
+            [cpt(j,:),resnorm(j)] = lsqnonlin(fun,x0,lb,ub,options);
 
         elseif (table.Reference(i) == 'Public transit: ${q://QID56/ChoiceGroup/SelectedChoices}' && table.transit_mode(i) == 'Commuter rail')
 
@@ -343,7 +354,7 @@ function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,metho
             f6 = @(alpha,beta_plus,beta_minus,lambda) sub(alpha,beta_plus,beta_minus,lambda,u1,u2,p6,R) + CE_sR(alpha,beta_plus,beta_minus,lambda);
 
             fun = @(x) system(f1,f2,f3,f4,f5,f6,x);
-            [cpt(i,:),resnorm(i)] = lsqnonlin(fun,x0,lb,ub,options);
+            [cpt(j,:),resnorm(j)] = lsqnonlin(fun,x0,lb,ub,options);
 
         elseif table.Reference(i) == 'Exclusive ridesharing'
 
@@ -399,7 +410,7 @@ function [cpt,resnorm] = estimate_params(table,R_type,weight_type,paramhat,metho
             f6 = @(alpha,beta_plus,beta_minus,lambda) sub(alpha,beta_plus,beta_minus,lambda,u1,u2,p6,R) + CE_sR(alpha,beta_plus,beta_minus,lambda);
 
             fun = @(x) system(f1,f2,f3,f4,f5,f6,x);
-            [cpt(i,:),resnorm(i)] = lsqnonlin(fun,x0,lb,ub,options);
+            [cpt(j,:),resnorm(j)] = lsqnonlin(fun,x0,lb,ub,options);
         end
     end
 end

@@ -2,80 +2,13 @@
 % Testing hypothesis 2: Approach of optimizing R for each passenger
 
 clear; clc;
-cd 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC'
-T = load('Data\Panel\Full_launch_6-10_n955');
+
+T = load('C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\Data\Panel\Full_launch_6-10_n955');
 table_orig = T.Fulllaunch610n955;
 
-cd 'Code\AAC_cpt\Survey analysis'
 table = convertvars(table_orig,[7:8,10:12,48:139],'double');
 num_responses = size(table,1); % Total no. of survey responses
-
-%% Identifying valid responses and testing for CPT effects
-valid = zeros(num_responses,1);
-
-for i = 1:num_responses
-    % Identifying erroneous responses
-    CE_low = table.lottery5(i); CE_med = table.lottery2(i); CE_high = table.lottery3(i); 
-    
-    if (CE_low <= CE_med) && (CE_med <= CE_high) && (table.lottery7(i) <= table.lottery8(i))
-        valid(i) = 1;
-    end
-end
-
-% Only use valid/rational responses going forward
-valid_indices = find(valid);
-num_valid = length(valid_indices);
-reflection_effect = zeros(num_valid,1);
-prob_weighting1 = zeros(num_valid,1);
-prob_weighting2 = zeros(num_valid,1);
-prob_weighting3 = zeros(num_valid,1);
-prob_weighting_any = zeros(num_valid,1);
-cpt_loss_aversion = zeros(num_valid,1);
-
-for i = 1:length(valid_indices)   
-    j = valid_indices(i);
-    
-    % All these tests are borrowed from Rieger et al. 2017
-    % Testing for reflection effect
-    if (table.lottery2(j) <= 60) && (table.lottery8(j) <= 60)
-        reflection_effect(i) = 1;
-    end
-   
-    % Testing for probability weighting
-    if (table.lottery5(j)/table.lottery2(j)) > (1/6)
-        prob_weighting1(i) = 1;
-    end
-    
-    if (table.lottery2(j)/table.lottery3(j)) > (2/3)
-        prob_weighting2(i) = 1;
-    end
-    
-    if (table.lottery5(j)/table.lottery3(j)) > (1/9)
-        prob_weighting3(i) = 1;
-    end
-    
-    if (prob_weighting1(i) == 1) || (prob_weighting2(i) == 1) || (prob_weighting3(i) == 1)
-        prob_weighting_any(i) = 1;
-    end
-    
-    % Testing whether loss aversion in PT is more valid than PT
-    cpt_loss_aversion(i) = mean([table.lottery9(j)/25, table.lottery10(j)/100]);
-end
-
-% Percentage of valid responses
-valid_responses = (sum(valid)/num_responses)*100
-
-% Percentage of valid respondents displaying reflection effect
-reflection_responses = (sum(reflection_effect)/num_valid)*100
-
-% Percentage of valid respondents displaying probability weighting
-prob_weighting1_ratio = (sum(prob_weighting1)/num_valid)*100
-prob_weighting2_ratio = (sum(prob_weighting2)/num_valid)*100
-prob_weighting3_ratio = (sum(prob_weighting3)/num_valid)*100
-prob_weighting_any_ratio = (sum(prob_weighting_any)/num_valid)*100
-
-% Loss aversion (A/B) ratio
-mean_ratio = mean(cpt_loss_aversion)
+load('valid_indices.mat');
 
 %% Estimating CPT parameters only using valid responses
 % Each row gives risk attitude parameters
@@ -91,13 +24,12 @@ options = optimoptions('lsqnonlin','Display','off','FiniteDifferenceStepSize',1e
     'FiniteDifferenceType','central','MaxFunctionEvaluations',5000,'MaxIterations',4000);
 weight_type = 'original';
 cdf = true;
-obj_fun = @(x,respondent_num,subset) lottery_obj(x,respondent_num,table,subset,weight_type,cdf);
+obj_fun = @(x,respondent_num) lottery_obj(x,respondent_num,table,weight_type,cdf);
 
 tic
-subset = randsample(10,10);
-for i = 1:20 %length(valid_indices)   
+for i = 1:length(valid_indices)   
     j = valid_indices(i);
-    objective = @(x) obj_fun(x,j,subset);
+    objective = @(x) obj_fun(x,j);
     [cpt(i,:),error(i)] = lsqnonlin(objective,x0,lb,ub,options); 
 end
 toc
@@ -105,7 +37,7 @@ cpt(:,5) = cpt(:,5) * 100;
 cpt(:,6) = cpt(:,6) * 10;
 
 %% Objective function for each combination of parameter values under consideration
-function F = lottery_obj(x,respondent_num,table,subset,weight_type,cdf)
+function F = lottery_obj(x,respondent_num,table,weight_type,cdf)
 %     alpha_plus = x(1); alpha_minus = x(2); beta_plus = x(3); beta_minus = x(4); lambda = x(5); R = x(6)
 
     % Normalize lambda so that all 4 parameters lie be tween 0 and 1
@@ -179,14 +111,7 @@ function F = lottery_obj(x,respondent_num,table,subset,weight_type,cdf)
     CE_actual = value_func(x(2),x(3),x(4),CE,R);
     f10 = error(x,CE_actual,u1,u2,p,R);
     
-    F_full = [f1; f2; f3; f4; f5; f6; f7; f8; f9; f10];
-    
-    % Using only a subset of 10 lotteries - randomly sampled without replacement
-    num_scenarios = length(subset);
-    F = zeros(num_scenarios,1);
-    for i = 1:num_scenarios
-        F(i) = F_full(subset(i));
-    end
+    F = [f1; f2; f3; f4; f5; f6; f7; f8; f9; f10];
 
 end
 

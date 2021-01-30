@@ -36,9 +36,10 @@ end
 toc
         
 %% Scatter plots
-
 num = num_valid;
 respondents = 1:1:num;
+
+cpt_lottery = cpt;
 
 figure(1)
 scatter(respondents,cpt_lottery(:,1))
@@ -66,25 +67,61 @@ ylabel('Sum of squared errors','Interpreter','latex')
 xlabel('Respondent','Interpreter','latex')
 
 %% Histograms
+num = num_valid;
+respondents = 1:1:num;
+
+cpt_lottery = cpt;
+    dir = 'C:\Users\vinee\OneDrive - Massachusetts Institute of Technology\MIT\AAC\SM Thesis\Figures\';
+
+
 figure(1)
 histogram(cpt_lottery(:,1));
-xlabel('$\alpha$','Interpreter','latex')
+xlabel('$\alpha^+$','Interpreter','latex')
 ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_alpha+.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
 
 figure(2)
 histogram(cpt_lottery(:,2));
-xlabel('$\beta^+$','Interpreter','latex')
+xlabel('$\alpha^-$','Interpreter','latex')
 ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_alpha-.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
+
 
 figure(3)
 histogram(cpt_lottery(:,3));
-xlabel('$\beta^-$','Interpreter','latex')
+xlabel('$\beta^+$','Interpreter','latex')
 ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_beta+.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
 
 figure(4)
 histogram(cpt_lottery(:,4));
+xlabel('$\beta^-$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_beta-.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
+
+figure(5)
+histogram(cpt_lottery(:,5));
 xlabel('$\lambda$','Interpreter','latex')
 ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_lambda.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
+
+figure(6)
+histogram(cpt_lottery(:,6));
+xlabel('Reference point $R$','Interpreter','latex')
+ylabel('Number of respondents','Interpreter','latex')
+name = join([dir,'lottery_hyp1_','scatter_error.png']);
+exportgraphics(gcf,name,'Resolution',300)
+close
 
 %% Objective function for each combination of parameter values under consideration
 function F = lottery_obj(x,respondent_num,table)

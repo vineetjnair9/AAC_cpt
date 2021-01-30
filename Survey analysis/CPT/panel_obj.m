@@ -1,12 +1,12 @@
 %% Objective function for each combination of parameter values under consideration
 function F = panel_obj(x,respondent_num,table,R_type,weight_type,paramhat,cdf,reg,lb,ub)
     
-    walk_time = -paramhat(1);
-    wait_time = -paramhat(2);
-    transit_time = -paramhat(3);
-    exc_time = -paramhat(4);
-    pool_time = -paramhat(5);
-    price = -paramhat(6);
+    walk_time = paramhat(1);
+    wait_time = paramhat(2);
+    transit_time = paramhat(3);
+    exc_time = paramhat(4);
+    pool_time = paramhat(5);
+    price = paramhat(6);
     ASC_transit = 0; % Baseline
     ASC_exclusive = paramhat(7);
     ASC_pooled = paramhat(8);
@@ -239,6 +239,6 @@ function F = panel_obj(x,respondent_num,table,R_type,weight_type,paramhat,cdf,re
     end
     
     x(5) = x(5)/100;
-    F = [f1; f2; f3; f4; f5; f6; reg.*[sqrt(norm(x-lb)); sqrt(norm(x-ub))]];
+    F = [f1; f2; f3; f4; f5; f6; reg.*[norm(x-lb); norm(x-ub)]];
     
 end

@@ -5,7 +5,7 @@ R = reference(u0,u1,u2,p,R_type);
 U_sR = subjective(alpha_plus,alpha_minus,beta_plus,beta_minus,lambda,u1,u2,p,R,weight_type);
 A_sR = value_func(beta_plus,beta_minus,lambda,u0,R);
 
-p_sR = exp(U_sR)./(exp(U_sR) + exp(A_sR));
-% p_sR = 1./(1 + exp(A_sR - U_sR));
+% p_sR = exp(U_sR)./(exp(U_sR) + exp(A_sR));
+p_sR = 1./(1 + exp(A_sR - U_sR));
 
 end
