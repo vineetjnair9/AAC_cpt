@@ -5,21 +5,21 @@
 % Consider a single SMoDS server operating in a particular locality/region
 clear; clc;
 
-lr_fixed = 0.3; 
+lr_fixed = 0.05; 
 time_factor = 0.005;
 exp_factor = 0.005;
 step_factor = 0.005;
 step_iters = 5;
-lr_type = 'time-decay';  % 'fixed', 'time-decay', 'exp-decay', 'step-decay'
+lr_type = 'fixed';  % 'fixed', 'time-decay', 'exp-decay', 'step-decay'
 R_type = 'dynamic_SMoDS';
 weight_type = 'original';
 
 % SMoDS server samples ride offers and decisions every dt seconds 
 % Each sampling action also = one negotiation iteration
-dt = 30;
+dt = 1;
 
 % Total time horizon (s)
-T = 1800; % (1h)
+T = 100; % (1h)
 
 % Negotiation iterations (1 iteration = 1 new/updated/revised ride offer)
 t = 1:dt:T; % Times at which we sample ride offers
@@ -37,7 +37,7 @@ while index < num_iters
     index = index + delta;
 end
 
-num_users = 500; % Total number of unique passengers using current server
+num_users = 50; % Total number of unique passengers using current server
 
 % True CPT parameters - Vector of parameters for each passenger
 % 0 < alpha_plus, alpha_minus, beta_plus, beta_minus < 1, 1 < lambda < 100
@@ -47,9 +47,16 @@ theta_true(1:4,:) = rand(4,num_users);
 theta_true(5,:) = 1 + 99.*rand(1,num_users);
 
 % Initializations for CPT params assumed by our model
+% theta_hat = zeros(5,num_users);
+% theta_hat(1:4,:) = rand(4,num_users);
+% theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+
+% Initializations for CPT params assumed by our model (adding Gaussian noise to true values)
 theta_hat = zeros(5,num_users);
-theta_hat(1:4,:) = rand(4,num_users);
-theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+% SD = 0.1 for 1st 4 params
+theta_hat(1:4,:) = theta_true(1:4,:) + 0.1.*randn(4,num_users);
+% SD = 2 for loss aversion param
+theta_hat(5,:) = theta_true(5,:) + 2.*randn(1,num_users);
 
 % Bounds on range from which to draw parameters uniformly at random
 
@@ -143,9 +150,13 @@ for i = 1:num_iters
     % Desired probability of acceptance at current iteration/sampling time
     p_star_vec = p_star(i).*ones(1,num_trips);
           
-    % Ocptimal price calculation based on assumed CPT model parameters
+    % Optimal price calculation based on assumed CPT model parameters
     % Only do this to set the initial condition for each period/interval when p* changes
     if (i == 1) || (p_star(i) ~= p_star(i-1))
+                
+        % Assume starting acceptance probability is somewhat close to desired value
+        p_sR_curr = p_star_vec + 0.1.*randn(1,num_trips);
+        
         n = 0;
         % Numerical method: Solve f(gamma_hat) - p* = 0 
         
@@ -166,8 +177,9 @@ for i = 1:num_iters
 
         % Under assumption that true passenger follows assumed CPT model (same functional form) but with different parameters
         p_sR_prev = p_sR_curr;
-        p_sR_curr = p_sR1(gamma_curr,alpha_plus_true,alpha_minus_true,beta_plus_true,beta_minus_true,lambda_true);
-        
+%         p_sR_curr = p_sR1(gamma_curr,alpha_plus_true,alpha_minus_true,beta_plus_true,beta_minus_true,lambda_true);
+        p_sR_curr = p_star_vec + 0.1.*randn(1,num_trips);           
+
         % p_sR values calculated via CPT above will differ for each trip/ride offer being considered
         % Get single value by averaging across all the samples (for convergence plot)
         p_sR_mean(i) = mean(p_sR_curr);
@@ -220,7 +232,6 @@ end
 toc
 
 % Plots
-fprintf('New_gamma')
 figure(1)
 hold on
 plot(t,p_star,'LineWidth',1.2);

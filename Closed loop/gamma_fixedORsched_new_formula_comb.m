@@ -1,6 +1,6 @@
 %% Problem setup
 % General reference case with gradient descent update (without sub-sampling ride offers)
-% Fixed step-size and learning rate schedules
+% Fixed step-size and learning rate schedules - all combined in 1 plot
 
 % Consider a single SMoDS server operating in a particular locality/region
 clear; clc;
@@ -45,9 +45,16 @@ theta_true(1:4,:) = rand(4,num_users);
 theta_true(5,:) = 1 + 99.*rand(1,num_users);
 
 % Initializations for CPT params assumed by our model
+% theta_hat = zeros(5,num_users);
+% theta_hat(1:4,:) = rand(4,num_users);
+% theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+
+% Initializations for CPT params assumed by our model (adding Gaussian noise to true values)
 theta_hat = zeros(5,num_users);
-theta_hat(1:4,:) = rand(4,num_users);
-theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+% SD = 0.1 for 1st 4 params
+theta_hat(1:4,:) = theta_true(1:4,:) + 0.1.*randn(4,num_users);
+% SD = 2 for loss aversion param
+theta_hat(5,:) = theta_true(5,:) + 2.*randn(1,num_users);
 
 % Bounds on range from which to draw parameters uniformly at random
 

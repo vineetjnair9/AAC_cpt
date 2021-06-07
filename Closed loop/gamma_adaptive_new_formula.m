@@ -1,16 +1,18 @@
 %% Problem setup
 % General reference case with gradient descent update (without sub-sampling ride offers)
-% Fixed step-size and learning rate schedules
+% Adaptive learning rate (Momentum)
 
 % Consider a single SMoDS server operating in a particular locality/region
 clear; clc;
 
 % SMoDS server samples ride offers and decisions every dt seconds 
 % Each sampling action also = one negotiation iteration
-dt = 10;
+dt = 1;
+alpha = 0.9;
+eta = 0.1;
 
 % Total time horizon (s)
-T = 3600; % (1h)
+T = 100; 
 
 % Negotiation iterations (1 iteration = 1 new/updated/revised ride offer)
 t = 1:dt:T; % Times at which we sample ride offers
@@ -37,10 +39,17 @@ theta_true = zeros(5,num_users);
 theta_true(1:4,:) = rand(4,num_users);
 theta_true(5,:) = 1 + 99.*rand(1,num_users);
 
-% Initializations for CPT params assumed by our model
+% Initializations for CPT params assumed by our model (completely random)
+% theta_hat = zeros(5,num_users);
+% theta_hat(1:4,:) = rand(4,num_users);
+% theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+
+% Initializations for CPT params assumed by our model (adding Gaussian noise to true values)
 theta_hat = zeros(5,num_users);
-theta_hat(1:4,:) = rand(4,num_users);
-theta_hat(5,:) = 1 + 99.*rand(1,num_users);
+% SD = 0.1 for 1st 4 params
+theta_hat(1:4,:) = theta_true(1:4,:) + 0.1.*randn(4,num_users);
+% SD = 2 for loss aversion param
+theta_hat(5,:) = theta_true(5,:) + 2.*randn(1,num_users);
 
 % Bounds on range from which to draw parameters uniformly at random
 
@@ -137,13 +146,15 @@ for i = 1:num_iters
     
     % Desired probability of acceptance at current iteration/sampling time
     p_star_vec = p_star(i).*ones(1,num_trips);
-    
+       
     % Optimal price calculation based on assumed CPT model parameters
     % Only do this to set the initial condition for each period/interval when p* changes
     if (i == 1) || (p_star(i) ~= p_star(i-1))
         
-        % Numerical method: Solve f(gamma_hat) - p* = 0 
+        % Assume starting acceptance probability is somewhat close to desired value
+        p_sR_curr = p_star_vec + 0.1.*randn(1,num_trips);
         
+        % Numerical method: Solve f(gamma_hat) - p* = 0 
         % Compute subjective probability of acceptance
         p_sR_hat = @(gamma) p_sR1(gamma,alpha_plus_hat,alpha_minus_hat,beta_plus_hat,beta_minus_hat,lambda_hat);
         fun = @(gamma) p_sR_hat(gamma) - p_star_vec;
@@ -161,7 +172,8 @@ for i = 1:num_iters
 
         % Under assumption that true passenger follows assumed CPT model (same functional form) but with different parameters
         p_sR_prev = p_sR_curr;
-        p_sR_curr = p_sR1(gamma_curr,alpha_plus_true,alpha_minus_true,beta_plus_true,beta_minus_true,lambda_true);
+%         p_sR_curr = p_sR1(gamma_curr,alpha_plus_true,alpha_minus_true,beta_plus_true,beta_minus_true,lambda_true);
+        p_sR_curr = p_star_vec + 0.1.*randn(1,num_trips);
         
         % p_sR values calculated via CPT above will differ for each trip/ride offer being considered
         % Get single value by averaging across all the samples (for convergence plot)
@@ -177,19 +189,19 @@ for i = 1:num_iters
 
         % Set elements (trips) with gamma_currS = gamma_prevS to have zero graident (i.e. no update made)
         grad(isnan(grad)) = 0;
-
+        % Normalized gradient
+%         grad = grad./norm(grad);
+        
         prev_update = gamma_prev - gamma_curr;
         update = (p_sR_curr - p_star_vec).*grad;
-        % Normalized gradient
+        % Normalize again
         update = update./norm(update);
         
         % Adaptive learning rate methods       
         % Momentum
-        alpha = 0.9;
-        eta = 0.1;
         curr_update = alpha.*prev_update + eta.*update;
         gamma_prev = gamma_curr;
-        gamma_curr = gamma_curr - curr_update;
+        gamma_curr = gamma_curr + curr_update;
               
         p_sR_prev = p_sR_curr;
         p_sR_curr = p_sR1(gamma_curr,alpha_plus_true,alpha_minus_true,beta_plus_true,beta_minus_true,lambda_true);
@@ -204,7 +216,6 @@ end
 toc
 
 % Plots
-fprintf('New_gamma')
 figure(1)
 hold on
 plot(t,p_star,'LineWidth',1.2);
